@@ -1,7 +1,7 @@
-import * as THREE from '../build/three.module.js';
-let camera, scene, renderer;
+import * as THREE from './three.module.js';
 
-let stairs, building, roof;
+let camera, scene, renderer;
+let  building;
 let group_bat;
 init();
 animate();
@@ -15,10 +15,10 @@ function init() {
 	//~~~~~~~~~~~~~~~ INSTALLATION CLASSIQUE  ~~~~~~~~~~~~~~~~~~~~~~~~~
 	scene = new THREE.Scene();
 
-	let texture = new THREE.TextureLoader().load( 'chateau.jpg' );
+	let texture = new THREE.TextureLoader().load( './textures/mur.jpg' );
 	let mur_pierre = new THREE.MeshBasicMaterial( { map: texture } );
 
-	let texture2 = new THREE.TextureLoader().load( 'tuiles.png' );
+	let texture2 = new THREE.TextureLoader().load( './textures/toit.jpg' );
 	let roof_texture = new THREE.MeshBasicMaterial( { map: texture2 } );
 
 	//mesh = new THREE.Mesh( geometry, mur_pierre );
@@ -38,7 +38,7 @@ function init() {
 		new THREE.Vector3(  10, -10, -10 )
 	);
 	geometry.faces.push( new THREE.Face3( 0, 1, 2 ) );
-	geometry.faces.push( new THREE.Face3( 3, 4, 5 ))
+	geometry.faces.push( new THREE.Face3( 3, 4, 5 ));
 
 
 	var triangleMesh = new THREE.Mesh(geometry, roof_texture);

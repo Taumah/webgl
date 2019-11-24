@@ -1,4 +1,4 @@
-import * as THREE from 'three.module.js';
+import * as THREE from './three.module.js';
 
 var camera, scene, renderer;
 var mesh, tour, mesh2, tour2;
@@ -16,9 +16,9 @@ function init() {
 	scene = new THREE.Scene();
 
 	//Declaration des textures
-	var mur = new THREE.TextureLoader().load('mur.jpg');
+	var mur = new THREE.TextureLoader().load('./textures/mur.jpg');
 	var textmur = new THREE.MeshBasicMaterial({map: mur});
-	var toit = new THREE.TextureLoader().load('toit.jpg');
+	var toit = new THREE.TextureLoader().load('./textures/toit.jpg');
 	var texttoit = new THREE.MeshBasicMaterial({map: toit});
 
 	//Declaration taille des elements
