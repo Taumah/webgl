@@ -1,25 +1,17 @@
 import * as THREE from './three.module.js';
 
-var camera, scene, renderer;
+//Declaration des textures
+const mur = new THREE.TextureLoader().load('./textures/mur.jpg');
+const wall_text = new THREE.MeshBasicMaterial({map: mur});
+const toit = new THREE.TextureLoader().load('./textures/toit.jpg');
+const roof_text = new THREE.MeshBasicMaterial({map: toit});
+
 var mesh, tour, mesh2, tour2;
+let left_tower,right_tower;
+let tower_group;
+export function createTowers() {
 
-init();
-animate();
 
-function init() {
-
-	//Camera
-	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
-	camera.position.z = 1000;
-	camera.position.y = 150;
-	camera.position.x = 0;
-	scene = new THREE.Scene();
-
-	//Declaration des textures
-	var mur = new THREE.TextureLoader().load('./textures/mur.jpg');
-	var textmur = new THREE.MeshBasicMaterial({map: mur});
-	var toit = new THREE.TextureLoader().load('./textures/toit.jpg');
-	var texttoit = new THREE.MeshBasicMaterial({map: toit});
 
 	//Declaration taille des elements
 	var geometry = new THREE.CylinderBufferGeometry(0, 120, 150, 50);
@@ -28,22 +20,24 @@ function init() {
 	var geometry4 = new THREE.CylinderBufferGeometry(100, 100, 200, 100);
 
 	//Application texture sur elements
-	mesh = new THREE.Mesh(geometry, texttoit);
-	mesh2 = new THREE.Mesh(geometry2, texttoit);
-	tour = new THREE.Mesh(geometry3, textmur);
-	tour2 = new THREE.Mesh(geometry4, textmur);
+	mesh = new THREE.Mesh(geometry, roof_text);
+	mesh2 = new THREE.Mesh(geometry2, roof_text);
+	tour = new THREE.Mesh(geometry3, wall_text);
+	tour2 = new THREE.Mesh(geometry4, wall_text);
 
 
 	//Fond d'écran -Ciel -Sol
-	var geometry6 = new THREE.PlaneGeometry( 5000, 5000,1, 1 );
-	var material2 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
-	var floor2 = new THREE.Mesh( geometry6, material2 );
-	scene.add( floor2 );
 
-	var geometry5 = new THREE.PlaneGeometry( 4000, 1100,1, 1 );
-	var material = new THREE.MeshBasicMaterial( { color: 0x00B200 } );
-	var floor = new THREE.Mesh( geometry5, material );
-	scene.add( floor );
+
+	// var geometry6 = new THREE.PlaneGeometry( 5000, 5000,1, 1 );
+	// var material2 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+	// var floor2 = new THREE.Mesh( geometry6, material2 );
+	// scene.add( floor2 );
+	//
+	// var geometry5 = new THREE.PlaneGeometry( 4000, 1100,1, 1 );
+	// var material = new THREE.MeshBasicMaterial( { color: 0x00B200 } );
+	// var floor = new THREE.Mesh( geometry5, material );
+	// scene.add( floor );
 
 	//Declaration des positions
 	//toits
@@ -66,33 +60,21 @@ function init() {
 	tour2.position.x = +600;
 
 	//Creation des scènes
-	scene.add(mesh);
-	scene.add(tour);
-	scene.add(mesh2);
-	scene.add(tour2);
 
+	left_tower = new THREE.Group();
+	left_tower.add(mesh);
+	left_tower.add(tour);
 
-	//Idk wtf that is
-	renderer = new THREE.WebGLRenderer( { antialias: true } );
-	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	document.body.appendChild( renderer.domElement );
-	window.addEventListener( 'resize', onWindowResize, false );
+	right_tower = new THREE.Group();
+	right_tower.add(mesh2);
+	right_tower.add(tour2);
+
+	tower_group = new THREE.Group();
+	tower_group.add(left_tower);
+	tower_group.add(right_tower);
+
+	return tower_group;
+
 
 }
 
-function onWindowResize() {
-
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
-
-	renderer.setSize( window.innerWidth, window.innerHeight );
-
-}
-
-function animate() {
-
-	requestAnimationFrame( animate );
-	renderer.render( scene, camera );
-
-}

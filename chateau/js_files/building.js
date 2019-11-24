@@ -1,94 +1,81 @@
 import * as THREE from './three.module.js';
 
-let camera, scene, renderer;
-let  building;
-let group_bat;
-init();
-animate();
-
-function init() {
-
-	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 2000 );
-	camera.position.z = 1000;
-	camera.position.y = 150;
-	camera.position.x = 0;
-	//~~~~~~~~~~~~~~~ INSTALLATION CLASSIQUE  ~~~~~~~~~~~~~~~~~~~~~~~~~
-	scene = new THREE.Scene();
-
-	let texture = new THREE.TextureLoader().load( './textures/mur.jpg' );
-	let mur_pierre = new THREE.MeshBasicMaterial( { map: texture } );
-
-	let texture2 = new THREE.TextureLoader().load( './textures/toit.jpg' );
-	let roof_texture = new THREE.MeshBasicMaterial( { map: texture2 } );
-
-	//mesh = new THREE.Mesh( geometry, mur_pierre );
-	//scene.add( mesh );
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~é
-
-	var geometry = new THREE.Geometry();
-
-	geometry.vertices.push(
-		new THREE.Vector3( -10,  10, 0 ),
-		new THREE.Vector3( -10, -10, 0 ),
-		new THREE.Vector3(  10, -10, 0 )
-	);
-	geometry.vertices.push(
-		new THREE.Vector3( -10,  10, -10 ),
-		new THREE.Vector3( -10, -10, -10 ),
-		new THREE.Vector3(  10, -10, -10 )
-	);
-	geometry.faces.push( new THREE.Face3( 0, 1, 2 ) );
-	geometry.faces.push( new THREE.Face3( 3, 4, 5 ));
+//Declaration des textures
+const mur = new THREE.TextureLoader().load('./textures/mur.jpg');
+const wall_text = new THREE.MeshBasicMaterial({map: mur});
+const toit = new THREE.TextureLoader().load('./textures/toit.jpg');
+const roof_text = new THREE.MeshBasicMaterial({map: toit});
 
 
-	var triangleMesh = new THREE.Mesh(geometry, roof_texture);
-	triangleMesh.position.set(1, 0.0, 0.0);
+function createRoof(){
+	let depth = 500;
+	let roof = new THREE.Geometry();
+	for(let i= 0 ; i<2 ; i++){
+		roof.vertices.push(
+			new THREE.Vector3( 0,  0, i*depth ), // point 1 face i
+			new THREE.Vector3( 100, 0, i*depth ), // point 2 face i...
+			new THREE.Vector3(  50, 100, i*depth )
+		);
+	}
+	//procedural equivalent :
+	// roof.vertices.push(
+	// 	new THREE.Vector3( 0,  0, 0 ), // point 1 face 1
+	// 	new THREE.Vector3( 100, 0, 0 ), // point 2 face 1...
+	// 	new THREE.Vector3(  50, 100, 0 )
+	// );
+	// roof.vertices.push(
+	// 	new THREE.Vector3( 0,  0, 200 ), // point 1 face 2
+	// 	new THREE.Vector3( 100, 0, 200 ), // point 2 face 2...
+	// 	new THREE.Vector3(  50, 100, 200 )
+	// );
 
-	scene.add(triangleMesh);
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	building = new THREE.BoxBufferGeometry( 200, 100, 200 );
-	building = new THREE.Mesh( building, mur_pierre ); //same variable to save space .
-	building.position.z = - 200;
+	roof.faces.push( new THREE.Face3( 0, 1, 2 ) );
+	roof.faces.push( new THREE.Face3( 3, 4, 5 ));   // base & top
 
-	//scene.add(stairs);
+	roof.faces.push( new THREE.Face3( 5, 4, 1 ) );   // side faces
+	roof.faces.push( new THREE.Face3( 1, 5, 2 ) );
 
-	group_bat = new THREE.Group();
-	//group_bat.add( roof );
-	group_bat.add( building );
+	roof.faces.push( new THREE.Face3( 0, 1, 3 ) );   // side faces
+	roof.faces.push( new THREE.Face3( 1, 3, 4 ) );
 
-	scene.add( group_bat );
+	roof.faces.push( new THREE.Face3( 0, 2, 5 ) );   // side faces
+	roof.faces.push( new THREE.Face3( 0, 3, 5 ) );
 
+	// we have 3   200*100px  quadrilaterals
 
-	//scene.add(building);
-	//scene.add(roof);
+	let building_roof = new THREE.Mesh(roof, roof_text);
 
+	building_roof.position.set(0,250,0);
+	//building_roof.rotation.y = 1.57;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	renderer = new THREE.WebGLRenderer( { antialias: true } );
-	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	document.body.appendChild( renderer.domElement );
-	window.addEventListener( 'resize', onWindowResize, false );
-
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	return building_roof;
 }
-function onWindowResize() {
 
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
+function createBuilding() {
 
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	let building = new THREE.BoxBufferGeometry( 500, 250, 200 );
+	building = new THREE.Mesh( building, wall_text ); //same variable to save space .
+	building.position.set(0,0,-100);
+
+return building;
+
 
 }
-function animate() {
 
-	requestAnimationFrame( animate );
 
-	//group_bat.rotation.x += 0.001;
-	//group_bat.rotation.z += 0.1;
-	//group_bat.rotation.y += 0.003;
+export function backgroundBuilding() {
+	let building = createBuilding();
+	let roof = createRoof();
 
-	renderer.render( scene, camera );
+	let bat_group = new THREE.Group();
+	bat_group.add(building);
+	bat_group.add(roof);
+
+	return bat_group;
 
 }
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
