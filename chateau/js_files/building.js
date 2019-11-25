@@ -1,20 +1,24 @@
 import * as THREE from './three.module.js';
+import {DoubleSide} from "./three.module.js";
 
 //Declaration des textures
 const mur = new THREE.TextureLoader().load('./textures/mur.jpg');
 const wall_text = new THREE.MeshBasicMaterial({map: mur});
+
 const toit = new THREE.TextureLoader().load('./textures/toit.jpg');
-const roof_text = new THREE.MeshBasicMaterial({map: toit});
+const roof_text = new THREE.MeshBasicMaterial({map: toit,side:DoubleSide});
 
 
 function createRoof(){
-	let depth = 500;
+	let depth = 500 , height = 130 , width = 200;
+
 	let roof = new THREE.Geometry();
+
 	for(let i= 0 ; i<2 ; i++){
 		roof.vertices.push(
 			new THREE.Vector3( 0,  0, i*depth ), // point 1 face i
-			new THREE.Vector3( 100, 0, i*depth ), // point 2 face i...
-			new THREE.Vector3(  50, 100, i*depth )
+			new THREE.Vector3(  width, 0, i*depth ), // point 2 face i...
+			new THREE.Vector3(width/2, height, i*depth )
 		);
 	}
 	//procedural equivalent :
@@ -30,7 +34,7 @@ function createRoof(){
 	// );
 
 
-	roof.faces.push( new THREE.Face3( 0, 1, 2 ) );
+	roof.faces.push( new THREE.Face3( 0, 1, 2 ));
 	roof.faces.push( new THREE.Face3( 3, 4, 5 ));   // base & top
 
 	roof.faces.push( new THREE.Face3( 5, 4, 1 ) );   // side faces
@@ -46,15 +50,17 @@ function createRoof(){
 
 	let building_roof = new THREE.Mesh(roof, roof_text);
 
-	building_roof.position.set(0,250,0);
-	//building_roof.rotation.y = 1.57;
+	building_roof.rotation.y = 1.57;
+	building_roof.position.set(-250,100,0);
+
+
 
 	return building_roof;
 }
 
 function createBuilding() {
 
-	let building = new THREE.BoxBufferGeometry( 500, 250, 200 );
+	let building = new THREE.BoxBufferGeometry( 500, 200, 200 );
 	building = new THREE.Mesh( building, wall_text ); //same variable to save space .
 	building.position.set(0,0,-100);
 
@@ -72,6 +78,7 @@ export function backgroundBuilding() {
 	bat_group.add(building);
 	bat_group.add(roof);
 
+	bat_group.position.z -= 200;
 	return bat_group;
 
 }

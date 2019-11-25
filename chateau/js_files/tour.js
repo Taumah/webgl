@@ -6,7 +6,7 @@ const wall_text = new THREE.MeshBasicMaterial({map: mur});
 const toit = new THREE.TextureLoader().load('./textures/toit.jpg');
 const roof_text = new THREE.MeshBasicMaterial({map: toit});
 
-var mesh, tour, mesh2, tour2;
+let mesh, tour, mesh2, tour2;
 let left_tower,right_tower;
 let tower_group;
 export function createTowers() {
@@ -14,10 +14,11 @@ export function createTowers() {
 
 
 	//Declaration taille des elements
-	var geometry = new THREE.CylinderBufferGeometry(0, 120, 150, 50);
-	var geometry2 = new THREE.CylinderBufferGeometry(0, 120, 150, 50);
-	var geometry3 = new THREE.CylinderBufferGeometry(100, 100, 200, 100);
-	var geometry4 = new THREE.CylinderBufferGeometry(100, 100, 200, 100);
+	var geometry = new THREE.CylinderBufferGeometry(0, 120, 150, 50);//futur toit
+	var geometry2 = new THREE.CylinderBufferGeometry(0, 120, 150, 50);//toit
+
+	var geometry3 = new THREE.CylinderBufferGeometry(100, 100, 200, 100);//futur mur
+	var geometry4 = new THREE.CylinderBufferGeometry(100, 100, 200, 100);//mur
 
 	//Application texture sur elements
 	mesh = new THREE.Mesh(geometry, roof_text);
@@ -38,29 +39,29 @@ export function createTowers() {
 	// var material = new THREE.MeshBasicMaterial( { color: 0x00B200 } );
 	// var floor = new THREE.Mesh( geometry5, material );
 	// scene.add( floor );
-
-	//Declaration des positions
 	//toits
+
 	mesh.position.y = +160;
 	mesh2.position.y = +160;
 
 	//decalage sur la gauche 1ere tour
-	tour.position.x = -600;
-	mesh.position.x = -600;
+	tour.position.x = -500;
+	mesh.position.x = -500;
 
 
 	//Avancement des tours
 	tour.position.z = +100;
 	mesh.position.z = +100;
-	mesh2.position.z = +150;
-	tour2.position.z = +150;
+	mesh2.position.z = +100;
+	tour2.position.z = +100;
 
 	//decalage sur la droite 2eme tour
-	mesh2.position.x = +600;
-	tour2.position.x = +600;
+	mesh2.position.x = +500;
+	tour2.position.x = +500;
 
 	//Creation des scènes
 
+//Declaration des positions
 	left_tower = new THREE.Group();
 	left_tower.add(mesh);
 	left_tower.add(tour);
