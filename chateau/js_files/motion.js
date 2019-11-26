@@ -1,9 +1,10 @@
 import * as THREE from "./three.module.js";
 import {backgroundBuilding} from "./building.js";
 import {createTowers} from './tour.js';
+import {leftSide} from './leftside.js';
 
 let camera, scene, renderer;
-let main_basement , towers;
+let main_basement , towers, leftside;
 
 init();
 animate();
@@ -11,8 +12,8 @@ animate();
 function init() {
     camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 2000 );
     camera.position.z = 1000;
-    camera.position.y = 100;
-    camera.position.x = 0;
+    camera.position.y =500;
+    camera.position.x = 500;
 
     camera.lookAt(0,0,0);
     //~~~~~~~~~~~~~~~ INSTALLATION CLASSIQUE  ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,10 +23,11 @@ function init() {
 
     main_basement = backgroundBuilding();
     towers = createTowers();
-
+    leftside = leftSide();
 
     scene.add(towers);
     scene.add(main_basement);
+    scene.add(leftside);
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
