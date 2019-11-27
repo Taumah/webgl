@@ -9,8 +9,9 @@ const toit = new THREE.TextureLoader().load('./textures/toit.jpg');
 const roof_text = new THREE.MeshBasicMaterial({map: toit,side:DoubleSide});
 
 
+
 function createRoofLeftSide(){
-	let depth = 500 , height = 130 , width = 200;
+	let depth = 400 , height = 130 , width = 175;
 
 	let roofleft = new THREE.Geometry();
 
@@ -51,7 +52,7 @@ function createRoofLeftSide(){
 	let building_roofleft = new THREE.Mesh(roofleft, roof_text);
 
 	building_roofleft.rotation.y = 0;
-	building_roofleft.position.set(-100,100,100);
+	building_roofleft.position.set(-87.5,100,150);
 
 
 
@@ -60,7 +61,7 @@ function createRoofLeftSide(){
 
 function createBuildingLeftSide() {
 
-	let buildingleft = new THREE.BoxBufferGeometry( 500, 200, 200 );
+	let buildingleft = new THREE.BoxBufferGeometry( 400, 200, 175 );
 	buildingleft = new THREE.Mesh( buildingleft, wall_text ); //same variable to save space .
 	buildingleft.position.set(0,0,350);
 	buildingleft.rotation.y = 1.57;
@@ -79,11 +80,28 @@ export function leftSide() {
 	bat_groupleft.add(buildingleft);
 	bat_groupleft.add(roofleft);
 
-	bat_groupleft.position.z -= 600;
-	bat_groupleft.position.x -= 330;
-	return bat_groupleft;
+	bat_groupleft.position.z -= 550;
+	bat_groupleft.position.x -= 350;
+	bat_groupleft.position.y -= 0
+
+	let rightside = bat_groupleft.clone();
+
+	rightside.position.z -= 0
+	rightside.position.x -= -700
+	rightside.position.y -= 0
+
+	let bat_groupright = new THREE.Group();
+	bat_groupright.add(rightside);
+
+	let bat_groupsides = new THREE.Group();
+	bat_groupsides.add(bat_groupright);
+	bat_groupsides.add(bat_groupleft);
+
+	return bat_groupsides;
 
 }
+
+
 
 
 

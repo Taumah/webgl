@@ -10,10 +10,10 @@ init();
 animate();
 
 function init() {
-    camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 2000 );
+    camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4000 );
     camera.position.z = 1000;
-    camera.position.y =500;
-    camera.position.x = 500;
+    camera.position.y = 500;
+    camera.position.x = 0;
 
     camera.lookAt(0,0,0);
     //~~~~~~~~~~~~~~~ INSTALLATION CLASSIQUE  ~~~~~~~~~~~~~~~~~~~~~~~~~

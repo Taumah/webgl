@@ -10,7 +10,7 @@ const roof_text = new THREE.MeshBasicMaterial({map: toit,side:DoubleSide});
 
 
 function createRoof(){
-	let depth = 500 , height = 130 , width = 200;
+	let depth = 650 , height = 130 , width = 200;
 
 	let roof = new THREE.Geometry();
 
@@ -51,7 +51,7 @@ function createRoof(){
 	let building_roof = new THREE.Mesh(roof, roof_text);
 
 	building_roof.rotation.y = 1.57;
-	building_roof.position.set(-250,100,0);
+	building_roof.position.set(-325,100,0);
 
 
 
@@ -60,7 +60,7 @@ function createRoof(){
 
 function createBuilding() {
 
-	let building = new THREE.BoxBufferGeometry( 500, 200, 200 );
+	let building = new THREE.BoxBufferGeometry( 650, 200, 200 );
 	building = new THREE.Mesh( building, wall_text ); //same variable to save space .
 	building.position.set(0,0,-100);
 
@@ -78,7 +78,8 @@ export function backgroundBuilding() {
 	bat_group.add(building);
 	bat_group.add(roof);
 
-	bat_group.position.z -= 200;
+	bat_group.position.z -= 420;
+	bat_group.position.x -= 50
 	return bat_group;
 
 }
