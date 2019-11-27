@@ -1,10 +1,10 @@
 import * as THREE from "./three.module.js";
 import {backgroundBuilding} from "./building.js";
 import {createTowers} from './tour.js';
-import {leftSide} from './leftside.js';
+import {createAside} from './Aside.js';
 
 let camera, scene, renderer;
-let main_basement , towers, leftside;
+let main_basement , towers, aside;
 
 init();
 animate();
@@ -23,11 +23,11 @@ function init() {
 
     main_basement = backgroundBuilding();
     towers = createTowers();
-    leftside = leftSide();
+    aside = createAside();
 
     scene.add(towers);
     scene.add(main_basement);
-    scene.add(leftside);
+    scene.add(aside);
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
