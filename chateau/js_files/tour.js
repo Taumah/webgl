@@ -14,8 +14,8 @@ export function createTowers() {
 
 
 	//Declaration taille des elements
-	var geometry = new THREE.CylinderBufferGeometry(0, 120, 150, 50);//futur toit
-	var geometry2 = new THREE.CylinderBufferGeometry(0, 120, 150, 50);//toit
+	var geometry = new THREE.CylinderBufferGeometry(0, 120, 150, 50); //futur toit
+	var geometry2 = new THREE.CylinderBufferGeometry(0, 120, 150, 50); //toit
 
 	var geometry3 = new THREE.CylinderBufferGeometry(100, 100, 200, 100);//futur mur
 	var geometry4 = new THREE.CylinderBufferGeometry(100, 100, 200, 100);//mur
