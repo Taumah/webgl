@@ -67,7 +67,7 @@ return buildingAside;
 }
 
 
-export function createAside(array, offset) {
+export function createAside() {
 	let buildingAside = createBuildingAside();
 	let roofAside = createRoofAside();
 
@@ -84,14 +84,14 @@ export function createAside(array, offset) {
 
 
 	bat_groupleft.position.z = -550;
-	bat_groupleft.position.x = -350;
+	bat_groupleft.position.x = -380;
 	bat_groupleft.position.y = 0;
 
 	bat_groupleft.rotation.y = 0;
 
 
 	bat_groupright.position.z = -570;
-	bat_groupright.position.x = 350;
+	bat_groupright.position.x = 320;
 	bat_groupright.position.y = 0;
 
 	bat_groupright.rotation.y = 0.2;

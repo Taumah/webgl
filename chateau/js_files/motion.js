@@ -2,9 +2,10 @@ import * as THREE from "./three.module.js";
 import {backgroundBuilding} from "./building.js";
 import {createTowers} from './tour.js';
 import {createAside} from './Aside.js';
+import {createFloor} from "./floor.js";
 
 let camera, scene, renderer;
-let main_basement , towers, aside;
+let main_basement , towers, aside , floor;
 
 init();
 animate();
@@ -12,7 +13,7 @@ animate();
 function init() {
     camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4000 );
     camera.position.z = 1500;
-    camera.position.y = 900;
+    camera.position.y = 800;
     camera.position.x = 0;
 
 
@@ -25,10 +26,13 @@ function init() {
     main_basement = backgroundBuilding();
     towers = createTowers();
     aside = createAside();
+    floor = createFloor();
 
+    scene.add(floor);
     scene.add(towers);
     scene.add(main_basement);
     scene.add(aside);
+
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,7 +56,7 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame( animate );
 
-    scene.rotation.y += 0.008;
+    // scene.rotation.y += 0.008;
 
     renderer.render( scene, camera );
 
