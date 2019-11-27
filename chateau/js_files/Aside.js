@@ -48,10 +48,7 @@ function createRoofAside(){
 	roofAside.faces.push( new THREE.Face3( 0, 3, 5 ) );
 
 	// we have 3   200*100px  quadrilaterals
-
-	building_roofAside.rotation.y = 0;
-	building_roofAside.position.set(-87.5,100,150);
-
+	building_roofAside.position.set(0,0,0);
 
 
 	return building_roofAside;
@@ -61,7 +58,7 @@ function createBuildingAside() {
 
 	let buildingAside = new THREE.BoxBufferGeometry( 400, 200, 175 );
 	buildingAside = new THREE.Mesh( buildingAside, wall_text ); //same variable to save space .
-	buildingAside.position.set(0,0,350);
+	buildingAside.position.set(0,0,0);
 	buildingAside.rotation.y = 1.57;
 
 return buildingAside;
@@ -70,26 +67,34 @@ return buildingAside;
 }
 
 
-export function createAside() {
+export function createAside(array, offset) {
 	let buildingAside = createBuildingAside();
 	let roofAside = createRoofAside();
+
+	roofAside.position.set(-87,100,150);
+	buildingAside.position.set(0, 0, 350);
 
 	let bat_groupleft = new THREE.Group();
 	bat_groupleft.add(buildingAside);
 	bat_groupleft.add(roofAside);
 
-	bat_groupleft.position.z -= 550;
-	bat_groupleft.position.x -= 350;
-	bat_groupleft.position.y -= 0;
-
 	let rightside = bat_groupleft.clone();
-
-	rightside.position.z -= 0;
-	rightside.position.x -= -700;
-	rightside.position.y -= 0;
-
 	let bat_groupright = new THREE.Group();
 	bat_groupright.add(rightside);
+
+
+	bat_groupleft.position.z = -550;
+	bat_groupleft.position.x = -350;
+	bat_groupleft.position.y = 0;
+
+	bat_groupleft.rotation.y = 0;
+
+
+	bat_groupright.position.z = -570;
+	bat_groupright.position.x = 350;
+	bat_groupright.position.y = 0;
+
+	bat_groupright.rotation.y = 0.2;
 
 	let bat_groupsides = new THREE.Group();
 	bat_groupsides.add(bat_groupright);

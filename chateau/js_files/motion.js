@@ -11,9 +11,10 @@ animate();
 
 function init() {
     camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4000 );
-    camera.position.z = 1000;
-    camera.position.y = 500;
+    camera.position.z = 1500;
+    camera.position.y = 900;
     camera.position.x = 0;
+
 
     camera.lookAt(0,0,0);
     //~~~~~~~~~~~~~~~ INSTALLATION CLASSIQUE  ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,9 +51,8 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame( animate );
-    //group_bat.rotation.x += 0.001;
-    //group_bat.rotation.z += 0.1;
-    //group_bat.rotation.y += 0.003;
+
+    scene.rotation.y += 0.008;
 
     renderer.render( scene, camera );
 
