@@ -1,7 +1,12 @@
 import * as THREE from "./three.module.js";
 import {createFloor} from "./floor.js";
 import {createCell , CELL_WIDTH , CELL_HEIGHT , CELL_DEPTH} from "./cells.js";
-// import {random,round} from Math;
+import {createSpotLight} from "./spotlight.js";
+
+
+let stats = new Stats();
+stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
 
 
 const CELLS_BY_ROW = 15 , CELLS_BY_COL = 15;
@@ -29,7 +34,7 @@ for(let i = 0 ; i < CELLS_BY_ROW ; i++){
 
 
 let camera, controls, scene, renderer;
-let  floor;
+let  floor , spotLight;
 let cell_model ;
 let running = false ; //launching automatically new nextGen
 
@@ -38,11 +43,11 @@ animate();
 
 function init() {
     camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4000 );
-    camera.position.z = 0;
-    camera.position.y = 2000;
-    camera.position.x = 0;
+    camera.position.z = 250;
+    camera.position.y = 1800;
+    camera.position.x = 250;
 
-    camera.lookAt(0,0,0);
+    camera.lookAt(250,0,250);
 
 
     //~~~~~~~~~~~~~~~ INSTALLATION CLASSIQUE  ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,8 +61,11 @@ function init() {
 
     cell_model = createCell();
     cell_model.position.set(0 , 40 , 0);
-
     disposeCells(scene, cell_model);
+
+
+    spotLight = createSpotLight();
+    scene.add(spotLight);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -85,10 +93,12 @@ function onWindowResize() {
 }
 
 function animate() {
-    // let ID_nextGen;
+    stats.begin();
+    stats.end();
     requestAnimationFrame( animate );
 
     renderer.render( scene, camera );
+
 }
 
 function disposeCells(scene, cell){
@@ -118,25 +128,33 @@ function disposeCells(scene, cell){
 
 let  ID_nextGen;
 function keydown_handler(e){
-    console.log(running);
 
     switch (e.code) {
         case "Space":
 
-            running ? clearInterval(ID_nextGen): null ;
+            if(running){
+                clearInterval(ID_nextGen);
+                running = 0;
+            }
+            else
+                nextGen();
 
-            nextGen();
+
             break;
         case "KeyP":
-            running = !running; //revert actual state
+            if(!running){
+                ID_nextGen = setInterval(nextGen , 1300);
 
-            if(running){
-               ID_nextGen = setInterval(nextGen , 2000);
+                running = !running; //revert actual state
             }
+
             else{
+
                 clearInterval(ID_nextGen);
+                running = 0;
             }
             break;
+
         default:
             console.log("no event assigned");
 
