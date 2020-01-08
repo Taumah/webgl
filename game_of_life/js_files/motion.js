@@ -42,18 +42,9 @@ init();
 animate();
 
 function init() {
-    camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4000 );
-    camera.position.z = 250;
-    camera.position.y = 1800;
-    camera.position.x = 250;
-
-    camera.lookAt(250,0,250);
-
-
-    //~~~~~~~~~~~~~~~ INSTALLATION CLASSIQUE  ~~~~~~~~~~~~~~~~~~~~~~~~~
+    //~~~~~~~~~~~~~~~ INSTALLATION PREALABLE  ~~~~~~~~~~~~~~~~~~~~~~~~~
     scene = new THREE.Scene();
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     floor = createFloor();
 
@@ -66,14 +57,26 @@ function init() {
 
     spotLight = createSpotLight();
     scene.add(spotLight);
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
 
+    camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4000 );
     // controls = new THREE.OrbitControls( camera, renderer.domElement );
+    //
+    // controls.enable = true;
+    // controls.enableKeys = true;
+
+    camera.position.set( 250, 1800, 250 );
+    camera.lookAt(250,0,250);
+
+    //controls.update() must be called after any manual changes to the camera's transform
     // controls.update();
+
+
 
     document.body.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
@@ -147,12 +150,22 @@ function keydown_handler(e){
 
                 running = !running; //revert actual state
             }
-
             else{
-
                 clearInterval(ID_nextGen);
                 running = 0;
             }
+            break;
+        case "KeyR":
+            if(running){
+                clearInterval(ID_nextGen);
+                running = 0;
+            }
+            else{
+                clearGrid();
+                disposeCells(scene , cell_model);
+
+            }
+
             break;
 
         default:
@@ -177,19 +190,21 @@ function nextGen(){
             }
 
             cells_around -= grid[row][col]; //ignore the cell itself
+
+
             // 3 rules of the game
 
-            // Cell is lonely and dies
+            // Cell is lonely -> dies
             if ((grid[row][col] === true) && (cells_around < 2)) {
                 future_grid[row][col] = false;
             }
 
-            // Cell dies due to over population
+            //over population -> Cell dies
             else if ((grid[row][col] === true) && (cells_around > 3)) {
                 future_grid[row][col] = false;
             }
 
-            // A new cell is born
+            // many cells around -> cell created
             else if ((grid[row][col] === false) && (cells_around === 3)){
                 future_grid[row][col] = true;
             }
@@ -213,6 +228,16 @@ function updateGrid(){
         for (let j = 1 ; j < CELLS_BY_COL - 1 ; j++){
             current_cell = scene.getObjectById(cellID_array[i][j])
             current_cell.visible = future_grid[i][j];
+
+        }
+    }
+}
+function clearGrid(){
+    let current_cell;
+    for (let i= 1 ; i < CELLS_BY_ROW - 1 ; i++){
+        for (let j = 1 ; j < CELLS_BY_COL - 1 ; j++){
+            current_cell = scene.getObjectById(cellID_array[i][j])
+            current_cell.visible = false;
 
         }
     }
