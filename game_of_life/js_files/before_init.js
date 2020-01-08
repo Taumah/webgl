@@ -1,4 +1,4 @@
-const CELLS_BY_ROW = 15, CELLS_BY_COL = 15;
+const CELLS_BY_ROW = 8, CELLS_BY_COL = 8;
 
 let cellID_array = new Array(CELLS_BY_ROW);
 let grid = new Array(CELLS_BY_ROW);

@@ -1,7 +1,7 @@
 import * as THREE from "./three.module.js";
 import {createFloor} from "./floor.js";
 import {createCell , CELL_WIDTH , CELL_HEIGHT , CELL_DEPTH} from "./cells.js";
-import {createSpotLight} from "./spotlight.js";
+import {createDirLight, createLightTarget} from "./spotlight.js";
 
 
 let stats = new Stats();
@@ -11,7 +11,8 @@ document.body.appendChild( stats.dom );
 
 
 let camera, controls, scene, renderer;
-let  floor , spotLight;
+let  floor ;
+let topLight , light , lightTarget;
 let cell_model ;
 let running = false ; //launching automatically new nextGen
 
@@ -21,8 +22,6 @@ animate();
 function init() {
     //~~~~~~~~~~~~~~~ INSTALLATION PREALABLE  ~~~~~~~~~~~~~~~~~~~~~~~~~
     scene = new THREE.Scene();
-
-
     floor = createFloor();
 
     scene.add(floor);
@@ -32,12 +31,22 @@ function init() {
     disposeCells(scene, cell_model);
 
 
-    spotLight = createSpotLight();
-    scene.add(spotLight);
+    topLight = createDirLight();
+    scene.add(topLight);
+
+    lightTarget = createLightTarget();
+    scene.add(lightTarget);
+    topLight.target = lightTarget;
+
+    light = new THREE.AmbientLight(0x121212);
+    scene.add(light);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
     renderer = new THREE.WebGLRenderer( { antialias: true } );
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
 
@@ -47,8 +56,8 @@ function init() {
     // controls.enable = true;
     // controls.enableKeys = true;
 
-    camera.position.set( 250, 1800, 250 );
-    camera.lookAt(250,0,250);
+    camera.position.set( 250, 400, 1200 );
+    camera.lookAt(180,200,100);
 
     //controls.update() must be called after any manual changes to the camera's transform
     // controls.update();

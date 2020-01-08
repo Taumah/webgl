@@ -1,21 +1,32 @@
 import * as THREE from './three.module.js';
+import {CELL_DEPTH, CELL_HEIGHT, CELL_WIDTH} from "./cells.js";
 
 
-export function createSpotLight() {
+export function createDirLight() {
+    let light = new THREE.DirectionalLight( 0xffffff, 1, 100 );
+    light.position.set( 150, 100, 100 ); 			//default; light shining from top
 
-    let spotLight = new THREE.SpotLight(0xff0000);
-    spotLight.position.set(100, 1000, 100);
+    light.castShadow = true;
 
-    spotLight.castShadow = true;
+    light.shadow.mapSize.width = 2048;  // default
+    light.shadow.mapSize.height = 1024; // default
+    light.shadow.camera.near = 0.5;    // default
+    light.shadow.camera.far = 1000;     // default
 
-    spotLight.shadow.mapSize.width = 1024;
-    spotLight.shadow.mapSize.height = 1024;
+    light.shadow.camera.left = 0;
+    light.shadow.camera.right = 200;
+    light.shadow.camera.top = 100;
+    light.shadow.camera.bottom = 0;
 
-    spotLight.shadow.camera.near = 10;
-    spotLight.shadow.camera.far = 4000;
-    spotLight.shadow.camera.fov = 50;
+    let helper = new THREE.CameraHelper( light.shadow.camera );
+    light.add( helper );
 
-    spotLight.lookAt(0,0,0);
+    return light;
+}
 
-    return spotLight;
+export function createLightTarget() {
+    let box_center = new THREE.Object3D();
+    box_center.position.set(CELLS_BY_ROW * CELL_WIDTH / 2 , 0 , CELLS_BY_COL * CELL_HEIGHT / 2);
+
+    return box_center;
 }

@@ -13,5 +13,7 @@ export function createFloor(){
     floor.rotation.x = 1.57;   // 90° rotation
     floor.position.set(0,0,0); // buildings' heights /2
 
+    floor.receiveShadow = true;
+
     return floor;
 }
