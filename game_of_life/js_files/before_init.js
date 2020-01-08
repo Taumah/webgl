@@ -1,4 +1,6 @@
-const CELLS_BY_ROW = 8, CELLS_BY_COL = 8;
+const CELLS_BY_ROW = 30, CELLS_BY_COL = 30;
+const CELL_WIDTH = 40, CELL_HEIGHT = 40 , CELL_DEPTH = 40;
+
 
 let cellID_array = new Array(CELLS_BY_ROW);
 let grid = new Array(CELLS_BY_ROW);
@@ -18,3 +20,6 @@ for (let i = 0; i < CELLS_BY_ROW; i++) {
     }
 }
 
+let x_camera = (CELLS_BY_COL * (CELL_WIDTH  + 20 ) ) / 2 ;
+let y_camera = 2500 ; // should use trigonometric functions to have a better focus
+let z_camera = (CELLS_BY_ROW * (CELL_HEIGHT + 20 ) ) / 2 ;

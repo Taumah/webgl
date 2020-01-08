@@ -1,7 +1,10 @@
 import * as THREE from "./three.module.js";
 import {createFloor} from "./floor.js";
-import {createCell , CELL_WIDTH , CELL_HEIGHT , CELL_DEPTH} from "./cells.js";
+import {createCell , disposeCells} from "./cells.js";
 import {createDirLight, createLightTarget} from "./spotlight.js";
+import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
+
+
 
 
 let stats = new Stats();
@@ -51,16 +54,15 @@ function init() {
     renderer.setSize( window.innerWidth, window.innerHeight );
 
     camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4500 );
-    // controls = new THREE.OrbitControls( camera, renderer.domElement );
+    controls = new OrbitControls( camera, renderer.domElement );
 
-    // controls.enable = true;
-    // controls.enableKeys = true;
+    controls.enable = true;
+    controls.enableKeys = true;
 
-    camera.position.set( 250, 400, 1200 );
-    camera.lookAt(180,200,100);
+    camera.position.set( x_camera, y_camera, z_camera );
+    camera.lookAt(x_camera,200,z_camera);
 
-    //controls.update() must be called after any manual changes to the camera's transform
-    // controls.update();
+    controls.update();
 
 
 
@@ -87,35 +89,10 @@ function animate() {
     stats.end();
     requestAnimationFrame( animate );
 
-    // controls.update();
+    controls.update();
 
     renderer.render( scene, camera );
 
-}
-
-function disposeCells(scene, cell){
-    let cell_duplicate;
-    let is_visible;
-
-
-    for (let i = 1 ; i < CELLS_BY_ROW - 1 ; i++  ){
-        for (let j = 1 ; j < CELLS_BY_COL - 1 ; j++){
-            cell_duplicate = cell.clone();
-
-            cell_duplicate.position.x = i * (CELL_WIDTH + 20);
-            cell_duplicate.position.z = j * (CELL_DEPTH + 20);
-
-            is_visible = Math.floor( Math.random()*5 );  //  1/x  chance of being visible (1 generation)
-
-            cell_duplicate.visible = !is_visible; //  NOT instruction. if =0 -> visible ; hidden otherwise
-
-            cellID_array[i][j] = cell_duplicate.id; // saves more memory than inserting whole object
-            grid[i][j] = !is_visible;
-
-            scene.add(cell_duplicate);
-
-        }
-    }
 }
 
 let  ID_nextGen;
@@ -161,22 +138,6 @@ function keydown_handler(e){
                 console.log("no event assigned");
 
     }
-
-    switch (e.code) {
-        case 37:
-
-            break;
-        case 38:
-            break;
-        case 39:
-            break;
-        case 40:
-            break;
-
-        default:
-            break
-
-    }
 }
 
 
@@ -197,7 +158,6 @@ function nextGen(){
             }
 
             cells_around -= grid[row][col]; //ignore the cell itself
-
 
             // 3 rules of the game
 

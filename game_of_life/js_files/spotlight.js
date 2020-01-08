@@ -1,10 +1,11 @@
 import * as THREE from './three.module.js';
-import {CELL_DEPTH, CELL_HEIGHT, CELL_WIDTH} from "./cells.js";
 
 
 export function createDirLight() {
     let light = new THREE.DirectionalLight( 0xffffff, 1, 100 );
-    light.position.set( 150, 100, 100 ); 			//default; light shining from top
+    light.position.x = 150;
+	light.position.y = 100;
+	light.position.z = 100;
 
     light.castShadow = true;
 
@@ -18,8 +19,8 @@ export function createDirLight() {
     light.shadow.camera.top = 100;
     light.shadow.camera.bottom = 0;
 
-    let helper = new THREE.CameraHelper( light.shadow.camera );
-    light.add( helper );
+    // let helper = new THREE.CameraHelper( light.shadow.camera );
+    // light.add( helper );
 
     return light;
 }
