@@ -5,31 +5,8 @@ import {createSpotLight} from "./spotlight.js";
 
 
 let stats = new Stats();
-stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild( stats.dom );
-
-
-const CELLS_BY_ROW = 15 , CELLS_BY_COL = 15;
-
-// const unused_lines = 2 ; // avoid invalid array indexes by creating 2 "dead" lines
-
-let cellID_array = new Array(CELLS_BY_ROW);
-let grid = new Array(CELLS_BY_ROW) ;
-let future_grid = new Array(CELLS_BY_ROW) ;
-
-for(let i = 0 ; i < CELLS_BY_ROW ; i++){  // creating a 2D array of the grid size
-    cellID_array[i] = new Array(CELLS_BY_COL);
-    grid[i] = new Array(CELLS_BY_COL);
-    future_grid[i] = new Array(CELLS_BY_COL);
-}
-
-for(let i = 0 ; i < CELLS_BY_ROW ; i++){
-    for(let j = 0 ; j < CELLS_BY_COL ; j++){
-        grid[i][j] = 0; //initialising
-        future_grid[i][j] = 0;
-    }
-}
-
 
 
 
@@ -64,9 +41,9 @@ function init() {
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
 
-    camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4000 );
+    camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4500 );
     // controls = new THREE.OrbitControls( camera, renderer.domElement );
-    //
+
     // controls.enable = true;
     // controls.enableKeys = true;
 
@@ -96,9 +73,12 @@ function onWindowResize() {
 }
 
 function animate() {
+
     stats.begin();
     stats.end();
     requestAnimationFrame( animate );
+
+    // controls.update();
 
     renderer.render( scene, camera );
 
@@ -167,12 +147,30 @@ function keydown_handler(e){
             }
 
             break;
+        default:
+            if (typeof e.code === "number" && e.code > 40 && e.code < 37 )
+                console.log("no event assigned");
+
+    }
+
+    switch (e.code) {
+        case 37:
+
+            break;
+        case 38:
+            break;
+        case 39:
+            break;
+        case 40:
+            break;
 
         default:
-            console.log("no event assigned");
+            break
 
     }
 }
+
+
 function nextGen(){
     //classic implementation of game of life
 

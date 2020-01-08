@@ -4,7 +4,7 @@ export function createFloor(){
 
     // let grass = new THREE.TextureLoader().load('./textures/grass_text.jpeg');
     //grass.repeat.set(20,20);  // not desired effect
-    let floor_geo = new THREE.PlaneGeometry( 3000,3000,1,1);
+    let floor_geo = new THREE.PlaneGeometry( 6000,6000,1,1);
 
     let floor_text = new THREE.MeshBasicMaterial({color:0x666666 , side:THREE.DoubleSide});
 
