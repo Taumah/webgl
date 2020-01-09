@@ -2,7 +2,7 @@ import * as THREE from "./three.module.js";
 import {createFloor} from "./floor.js";
 import {createCell , disposeCells} from "./cells.js";
 import {createDirLight, createLightTarget} from "./spotlight.js";
-import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from './OrbitControls.js';
 
 
 
