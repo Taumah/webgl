@@ -5,7 +5,7 @@ import * as THREE from './three.module.js';
 			import { ColladaLoader } from './ColladaLoader.js';
 
 			var container, stats, clock;
-			var camera, scene, renderer, elf;
+			var camera, scene, renderer, table_cantina, building_cantina;
 
 			init();
 			animate();
@@ -25,18 +25,27 @@ import * as THREE from './three.module.js';
 
 				var loadingManager = new THREE.LoadingManager( function () {
 
-					scene.add( elf );
+					scene.add(table_cantina);
+					scene.add (building_cantina);
 
 				} );
 
 				// collada
 
-				var loader = new ColladaLoader( loadingManager );
-				loader.load( './models/elf/elf.dae', function ( collada ) {
+				var table_cantina = new ColladaLoader( loadingManager );
+				table_cantina.load( './models/table_cantina/table_cantina.dae', function ( collada ) {
 
-					elf = collada.scene;
+					table_cantina = collada.scene;
 
 				} );
+
+				var building_cantina = new ColladaLoader( loadingManager );
+				building_cantina.load( './models/building_cantina/building_cantina.dae', function ( collada ) {
+
+					building_cantina = collada.scene;
+
+				} );
+				
 
 				//
 
@@ -87,9 +96,15 @@ import * as THREE from './three.module.js';
 
 				var delta = clock.getDelta();
 
-				if ( elf !== undefined ) {
+				if ( table_cantina !== undefined ) {
 
-					elf.rotation.z += delta * 0.5;
+					table_cantina.rotation.z += delta * 0.5;
+
+				}
+
+				if ( building_cantina !== undefined ) {
+
+					building_cantina.rotation.z += delta * 0.5;
 
 				}
 
