@@ -1,12 +1,11 @@
 import * as THREE from './three.module.js';
-
-			import Stats from './stats.module.js';
-
-			import { ColladaLoader } from './ColladaLoader.js';
+import Stats from './stats.module.js';
+import { ColladaLoader } from './ColladaLoader.js';
+import {OrbitControls} from "./OrbitControls.js";
 
 			var container, stats, clock;
 			var camera, scene, renderer, table_cantina, building_cantina;
-
+			let controls;
 			init();
 			animate();
 
@@ -45,7 +44,7 @@ import * as THREE from './three.module.js';
 					building_cantina = collada.scene;
 
 				} );
-				
+
 
 				//
 
@@ -63,6 +62,13 @@ import * as THREE from './three.module.js';
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
 
+				//
+				controls = new OrbitControls( camera, renderer.domElement );
+
+				controls.enable = true;
+				controls.enableKeys = true;
+
+				controls.update();
 				//
 
 				stats = new Stats();
@@ -86,6 +92,7 @@ import * as THREE from './three.module.js';
 			function animate() {
 
 				requestAnimationFrame( animate );
+				controls.update();
 
 				render();
 				stats.update();

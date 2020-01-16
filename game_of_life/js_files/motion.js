@@ -1,8 +1,9 @@
 import * as THREE from "./three.module.js";
 import {createFloor} from "./floor.js";
 import {createCell , disposeCells} from "./cells.js";
-import {createDirLight, createLightTarget} from "./spotlight.js";
+import {createSpotLight, createLightTarget} from "./spotlight.js";
 import { OrbitControls } from './OrbitControls.js';
+import { ColladaLoader } from  './ColladaLoader.js';
 
 
 
@@ -11,13 +12,14 @@ let stats = new Stats();
 stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild( stats.dom );
 
-
+let elf;
 
 let camera, controls, scene, renderer;
 let  floor ;
 let topLight , light , lightTarget;
 let cell_model ;
 let running = false ; //launching automatically new nextGen
+let clock;
 
 init();
 animate();
@@ -30,37 +32,47 @@ function init() {
     scene.add(floor);
 
     cell_model = createCell();
-    cell_model.position.set(0 , 40 , 0);
+    cell_model.position.set(0 , 200 , 0);
     disposeCells(scene, cell_model);
 
 
-    topLight = createDirLight();
+    topLight = createSpotLight();
+    topLight.angle = 1.0;
     scene.add(topLight);
-
     lightTarget = createLightTarget();
     scene.add(lightTarget);
     topLight.target = lightTarget;
 
-    light = new THREE.AmbientLight(0x121212);
+    light = new THREE.AmbientLight(0x121212 , 0.1);
     scene.add(light);
+
+    clock = new THREE.Clock();
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+	let loadingManager = new THREE.LoadingManager( scene.add ( elf ) );
+	let loader = new ColladaLoader(loadingManager);
+	loader.load("../objects/elf.dae" , function(collada_obj){
+		elf = collada_obj.scene;
+	});
 
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+	renderer.outputEncoding = THREE.sRGBEncoding;
 
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
 
-    camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 4500 );
+    camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 8000 );
     controls = new OrbitControls( camera, renderer.domElement );
 
     controls.enable = true;
     controls.enableKeys = true;
 
     camera.position.set( x_camera, y_camera, z_camera );
-    camera.lookAt(x_camera,200,z_camera);
+    camera.lookAt(x_camera/2,-500,z_camera/2);
 
     controls.update();
 
@@ -90,9 +102,18 @@ function animate() {
     requestAnimationFrame( animate );
 
     controls.update();
-
+	render()
+    // topLight.update();
     renderer.render( scene, camera );
 
+}
+
+function render(){
+	let delta = clock.getDelta();
+
+	if(elf !== undefined){
+		elf.rotation.z += delta * 0.5;
+	}
 }
 
 let  ID_nextGen;
@@ -112,7 +133,7 @@ function keydown_handler(e){
             break;
         case "KeyP":
             if(!running){
-                ID_nextGen = setInterval(nextGen , 1300);
+                ID_nextGen = setInterval(nextGen , 300);
 
                 running = !running; //revert actual state
             }
@@ -134,8 +155,7 @@ function keydown_handler(e){
 
             break;
         default:
-            if (typeof e.code === "number" && e.code > 40 && e.code < 37 )
-                console.log("no event assigned");
+			console.log("no event assigned");
 
     }
 }

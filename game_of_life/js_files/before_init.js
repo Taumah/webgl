@@ -20,6 +20,6 @@ for (let i = 0; i < CELLS_BY_ROW; i++) {
     }
 }
 
-let x_camera = (CELLS_BY_COL * (CELL_WIDTH  + 20 ) ) / 2 ;
+let x_camera = (CELLS_BY_COL * (CELL_WIDTH  + 20 ) );
 let y_camera = 2500 ; // should use trigonometric functions to have a better focus
-let z_camera = (CELLS_BY_ROW * (CELL_HEIGHT + 20 ) ) / 2 ;
+let z_camera = (CELLS_BY_ROW * (CELL_HEIGHT + 20 ) );
