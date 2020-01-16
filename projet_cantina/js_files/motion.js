@@ -1,10 +1,10 @@
-import * as THREE from './three.module.js';
-import Stats from './stats.module.js';
-import { ColladaLoader } from './ColladaLoader.js';
-import {OrbitControls} from "./OrbitControls.js";
+import * as THREE from './Dependencies/three.module.js';
+import Stats from './Dependencies/stats.module.js';
+import { ColladaLoader } from './Dependencies/ColladaLoader.js';
+import {OrbitControls} from "./Dependencies/OrbitControls.js";
 
-			var container, stats, clock;
-			var camera, scene, renderer, table_cantina, building_cantina;
+			let container, stats, clock;
+			let camera, scene, renderer, table_cantina, building_cantina;
 			let controls;
 			init();
 			animate();

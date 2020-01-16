@@ -3895,9 +3895,9 @@ ColladaLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
 		}
 
 		// metadata
-
-		var version = collada.getAttribute( 'version' );
-		console.log( 'THREE.ColladaLoader: File version', version );
+		//
+		// var version = collada.getAttribute( 'version' );
+		// console.log( 'THREE.ColladaLoader: File version', version );
 
 		var asset = parseAsset( getElementsByTagName( collada, 'asset' )[ 0 ] );
 		var textureLoader = new TextureLoader( this.manager );
