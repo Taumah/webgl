@@ -4,7 +4,10 @@ Cantina de Star Wars
 
 -trajet jusqu'a ce batiment ? (bataille en cours , laser traversent la scene (+ sons ajoutés aux lasers) )
 
+
+
 -escaliers pour le batiment *_* / porte (gestion des colisions)
+		-escaliers affichées mais on cache une plateforme (comme pour un fauteuil roulant) placée en diagonale
 
 -planetes dans l'espace (décor)
 
