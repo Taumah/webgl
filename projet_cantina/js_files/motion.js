@@ -27,6 +27,8 @@ function init() {
 
 	var loadingManager = new THREE.LoadingManager( function () {
 
+
+
 		let table2 = table_cantina.clone();
 
 		table2.scale.set(0.01 , 0.01 , 0.01);
@@ -41,6 +43,7 @@ function init() {
 		scene.add(table3);
 		scene.add(table_cantina);
 
+		building_cantina.scale.set(1, 1, 1);
 		building_cantina.position.set(100,0,40); //put it further
 		scene.add (building_cantina);
 
