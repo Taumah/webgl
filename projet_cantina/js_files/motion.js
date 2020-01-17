@@ -47,8 +47,8 @@ function init() {
 		building_cantina.position.set(100,-1,40); //put it further
 		scene.add (building_cantina);
 
-		saxophonist.scale.set( 1, 1, 1);
-		scene.add(saxophonist);
+	/*	saxophonist.scale.set( 1, 1, 1);
+		scene.add(saxophonist);  */
 
 	} );
 
@@ -69,11 +69,11 @@ function init() {
 
 	} );
 
-	var saxophonist = new ColladaLoader(loadingManager);
+/*	var saxophonist = new ColladaLoader(loadingManager);
 	saxophonist.load('./models/saxophonist/saxophonist.dae', function (collada) {
 
 		saxophonist = collada.scene;
-	});
+	}); */
 
 	//Floor
 
