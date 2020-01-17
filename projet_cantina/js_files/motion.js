@@ -15,9 +15,9 @@ animate();
 function init() {
 
 	container = document.getElementById( 'container' );
-	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 2000 );
-	camera.position.set( 8, 50, 30 );
-	camera.lookAt( 0, 3, 0 );
+	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 4000 );
+	camera.position.set( 750, 60, -240 );
+	camera.lookAt( 1000, 50, -300 );
 
 	scene = new THREE.Scene();
 
@@ -31,20 +31,20 @@ function init() {
 
 		let table2 = table_cantina.clone();
 
-		table2.scale.set(0.01 , 0.01 , 0.01);
-		table2.position.set( 12, 0 , 0);
+		table2.scale.set(0.3,0.3,0.3);
+		table2.position.set( -200, 36*table2.scale.y , -200);
 
 		scene.add(table2);
 		let table3 = table_cantina.clone();
 
-		table3.scale.set(0.03 , 0.03 , 0.03);
-		table3.position.set( 30, 0 , 0);
+		table3.scale.set(0.5,0.5,0.5);
+		table3.position.set( -130, 36*table3.scale.y  , -80);
 
 		scene.add(table3);
-		scene.add(table_cantina);
+		// scene.add(table_cantina);
 
 		building_cantina.scale.set(1, 1, 1);
-		building_cantina.position.set(100,0,40); //put it further
+		building_cantina.position.set(100,-1,40); //put it further
 		scene.add (building_cantina);
 
 	} );
@@ -67,7 +67,7 @@ function init() {
 	} );
 
 	//Floor
-	
+
     scene = new THREE.Scene();
     floor = createFloor();
 
@@ -142,9 +142,5 @@ function render() {
 	}
 
 	renderer.render( scene, camera );
-
-}
-
-function scaleExample(){
 
 }
