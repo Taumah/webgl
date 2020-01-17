@@ -1,10 +1,13 @@
 import * as THREE from './Dependencies/three.module.js';
 import Stats from './Dependencies/stats.module.js';
+import {createFloor} from "./floor.js";
 import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
 
 let container, stats, clock;
 let camera, scene, renderer, table_cantina, building_cantina;
+
+let  floor ;
 let controls;
 init();
 animate();
@@ -36,7 +39,7 @@ function init() {
 		table3.position.set( 30, 0 , 0);
 
 		scene.add(table3);
-		// scene.add(table_cantina);
+		scene.add(table_cantina);
 
 		building_cantina.position.set(100,0,40); //put it further
 		scene.add (building_cantina);
@@ -60,7 +63,12 @@ function init() {
 
 	} );
 
+	//Floor
+	
+    scene = new THREE.Scene();
+    floor = createFloor();
 
+    scene.add(floor);
 	//
 
 	var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
