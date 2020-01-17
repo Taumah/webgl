@@ -1,0 +1,12 @@
+différence Positional AUdio / Audio classqiue
+
+
+setRefDistance : distance minimale pour écouter le son 
+
+
+POINTERLOCK 
+add keyboard handler pour jouer les touches  (saut, avancer etc)
+
+(chercher) raycaster new THREE.Raycaster(vector position actuelle ; vector position de verif (0,-1,0 pour nos pieds)   )
+
+misc_controls_pointerlock.html
