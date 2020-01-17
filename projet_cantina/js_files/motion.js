@@ -47,6 +47,9 @@ function init() {
 		building_cantina.position.set(100,0,40); //put it further
 		scene.add (building_cantina);
 
+		saxophonist.scale.set( 1, 1, 1);
+		scene.add(saxophonist);
+
 	} );
 
 	// collada
@@ -65,6 +68,12 @@ function init() {
 		building_cantina = collada.scene;
 
 	} );
+
+	var saxophonist = new ColladaLoader(loadingManager);
+	saxophonist.load('./models/saxophonist/saxophonist.dae', function (collada) {
+
+		saxophonist = collada.scene;
+	});
 
 	//Floor
 	
