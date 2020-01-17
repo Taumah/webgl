@@ -1,0 +1,21 @@
+Cantina de Star Wars
+
+-Batiment lui-meme , bar au centre , tables, musiciens et personnes qui dansent
+
+-trajet jusqu'a ce batiment ? (bataille en cours , laser traversent la scene (+ sons ajoutés aux lasers) )
+
+-escaliers pour le batiment *_* / porte (gestion des colisions)
+
+-planetes dans l'espace (décor)
+
+-event déclenché lorqu'on arrive à certains point de la map
+
+-musiques si on l'apprend (je l'avais dit hihi)
+
+trop ambitieux ? 
+
+
+laser nous touche , die() animation ? 
+
+
+firspersoncontrol /clock / overlay de démarrage / fog (OF WAR lol)
