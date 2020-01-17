@@ -3,7 +3,6 @@ import {createFloor} from "./floor.js";
 import {createCell , disposeCells} from "./cells.js";
 import {createSpotLight, createLightTarget} from "./spotlight.js";
 import { OrbitControls } from './OrbitControls.js';
-import { ColladaLoader } from  './ColladaLoader.js';
 
 
 
@@ -47,13 +46,6 @@ function init() {
     scene.add(light);
 
     clock = new THREE.Clock();
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	let loadingManager = new THREE.LoadingManager( scene.add ( elf ) );
-	let loader = new ColladaLoader(loadingManager);
-	loader.load("../objects/elf.dae" , function(collada_obj){
-		elf = collada_obj.scene;
-	});
 
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
