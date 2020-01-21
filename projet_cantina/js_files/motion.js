@@ -1,110 +1,58 @@
 import * as THREE from './Dependencies/three.module.js';
 import Stats from './Dependencies/stats.module.js';
-import {createFloor} from "./floor.js";
 import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
 
-let container, stats, clock;
-let camera, scene, renderer, table_cantina, building_cantina;
+import {createFloor} from "./floor.js";
 
-let  floor ;
-let controls;
-init();
-animate();
+let container = document.getElementById( 'container' );
 
 
-function init() {
+export function init() {
+	createRenderer(); //essential object
 
-	container = document.getElementById( 'container' );
-	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 4000 );
-	camera.position.set( 750, 60, -240 );
-	camera.lookAt( 1000, 50, -300 );
+	createCamera(); // orbit control and camera are set
 
 	scene = new THREE.Scene();
 
 	clock = new THREE.Clock();
 
-	// loading manager
+	loadingManager = new THREE.LoadingManager();
 
-	var loadingManager = new THREE.LoadingManager( function () {
+	loadingManager.onLoad = function () {
+
+		Dispose();//places every loaded object on map
+		// (unfortunately already added with loading manager)
 
 
+	};
 
-		let table2 = table_cantina.clone();
+	loader = new ColladaLoader( loadingManager );
 
-		table2.scale.set(0.3,0.3,0.3);
-		table2.position.set( -200, 36*table2.scale.y , -200);
+	floor = createFloor();
+	scene.add(floor);
 
-		scene.add(table2);
-		let table3 = table_cantina.clone();
+	for(let i = 0 ; i < objects_locations.length ; i++) {
+		loader.load(object_path + objects_locations[i] , function(obj){
 
-		table3.scale.set(0.5,0.5,0.5);
-		table3.position.set( -130, 36*table3.scale.y  , -80);
+			loaded_objects.push(obj.scene);
 
-		scene.add(table3);
-		// scene.add(table_cantina);
+			if(obj['animations'].length !== 0){
+				console.log("some work has to be done !");
+			}
 
-		building_cantina.scale.set(1, 1, 1);
-		building_cantina.position.set(100,-1,40); //put it further
-		scene.add (building_cantina);
+		}) ;
 
-	/*	saxophonist.scale.set( 1, 1, 1);
-		scene.add(saxophonist);  */
+	} // loading and adding shadow to every imported object
+	putShadow();// need to find where to put this
 
-	} );
-
-	// collada
-
-	var table_cantina = new ColladaLoader( loadingManager );
-	table_cantina.load( './models/table_cantina/table_cantina.dae', function ( collada ) {
-
-		table_cantina = collada.scene;
-		table_cantina.scale.set(0.05,0.05,0.05);
-
-	} );
-
-	var building_cantina = new ColladaLoader( loadingManager );
-	building_cantina.load( './models/building_cantina/building_cantina.dae', function ( collada ) {
-
-		building_cantina = collada.scene;
-
-	} );
-
-/*	var saxophonist = new ColladaLoader(loadingManager);
-	saxophonist.load('./models/saxophonist/saxophonist.dae', function (collada) {
-
-		saxophonist = collada.scene;
-	}); */
-
-	//Floor
-
-    scene = new THREE.Scene();
-    floor = createFloor();
-
-    scene.add(floor);
-	//
-
-	var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+	ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
 	scene.add( ambientLight );
 
-	var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
+	directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
 	directionalLight.position.set( 1, 1, 0 ).normalize();
 	scene.add( directionalLight );
 
-	//
-
-	renderer = new THREE.WebGLRenderer();
-	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	container.appendChild( renderer.domElement );
-
-	//
-	controls = new OrbitControls( camera, renderer.domElement );
-
-	controls.enable = true;
-	controls.enableKeys = true;
-
-	controls.update();
 	//
 
 	stats = new Stats();
@@ -125,7 +73,7 @@ function onWindowResize() {
 
 }
 
-function animate() {
+export function animate() {
 
 	requestAnimationFrame( animate );
 	controls.update();
@@ -137,20 +85,44 @@ function animate() {
 
 function render() {
 
-	var delta = clock.getDelta();
-
-	if ( table_cantina !== undefined ) {
-
-		table_cantina.rotation.z += delta * 0.5;
-
-	}
-
-	if ( building_cantina !== undefined ) {
-
-		building_cantina.rotation.z += delta * 0.5;
-
-	}
-
+	// var delta = clock.getDelta();
 	renderer.render( scene, camera );
 
 }
+
+function createCamera() {
+
+	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 4000 );
+	camera.position.set( 750, 60, -240 );
+	camera.lookAt( 1000, 50, -300 );
+
+	controls = new OrbitControls( camera, renderer.domElement );
+
+	controls.enable = true;
+	controls.enableKeys = true;
+
+	controls.update();
+
+}
+
+function createRenderer() {
+
+	renderer = new THREE.WebGLRenderer();
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	container.appendChild( renderer.domElement );
+
+}
+
+function putShadow() {
+
+	loaded_objects.forEach(element => element.traverse(function (node) {
+		if (node instanceof THREE.Mesh) {
+			node.castShadow = true;
+			node.receiveShadow = true;
+		}
+	}));
+}
+
+
+

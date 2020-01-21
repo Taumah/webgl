@@ -15,7 +15,5 @@ export function createFloor(){
 
     floor.receiveShadow = true;
 
-    console.log(floor);
-
     return floor;
 }
