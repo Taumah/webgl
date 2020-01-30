@@ -4,6 +4,7 @@ import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
 
 import {createFloor} from "./floor.js";
+import {CreateLasers} from "./lasers.js";
 
 let container = document.getElementById( 'container' );
 
@@ -31,7 +32,8 @@ export function init() {
 
 	floor = createFloor();
 	scene.add(floor);
-
+	lasers = CreateLasers();
+	scene.add(lasers);
 	for(let i = 0 ; i < objects_locations.length ; i++) {
 		loader.load(object_path + objects_locations[i] , function(obj){
 

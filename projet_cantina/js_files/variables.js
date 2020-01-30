@@ -11,6 +11,7 @@ let loaded_objects= [];
 let stats, clock;  // "plug-ins"
 let camera, scene, renderer; // essentials
 
+let lasers;
 
 let  floor ;
 let controls;
