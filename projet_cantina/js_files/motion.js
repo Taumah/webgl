@@ -49,6 +49,8 @@ export function init() {
 	// finally add the sound to the mesh
 	mesh.add( sound2 );
 
+	scene.fog = new THREE.FogExp2(0x8f8483, 0.00200);
+
 	
 
 	loader = new ColladaLoader( loadingManager );
