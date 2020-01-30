@@ -2,6 +2,7 @@ import * as THREE from './Dependencies/three.module.js';
 import Stats from './Dependencies/stats.module.js';
 import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
+import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
 
 import {createFloor} from "./floor.js";
 
@@ -16,6 +17,16 @@ export function init() {
 	scene = new THREE.Scene();
 
 	clock = new THREE.Clock();
+
+	var controls;
+	controls = new FirstPersonControls( camera, renderer.domElement );
+
+				controls.movementSpeed = 70;
+				controls.lookSpeed = 0.05;
+				controls.noFly = true;
+				controls.lookVertical = false;
+
+
 	
 	var listener = new THREE.AudioListener;
 	camera.add(listener);
@@ -101,6 +112,7 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	controls.handleResize();
 
 }
 
@@ -117,6 +129,8 @@ export function animate() {
 function render() {
 
 	// var delta = clock.getDelta();
+	
+	controls.update( clock.getDelta() );
 	renderer.render( scene, camera );
 
 }
