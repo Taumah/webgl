@@ -35,6 +35,12 @@ export function init() {
 	for(let i = 0 ; i < objects_locations.length ; i++) {
 		loader.load(object_path + objects_locations[i] , function(obj){
 
+			obj.scene.traverse( function( node ) {
+				if ( node instanceof THREE.Mesh ) {
+					node.castShadow = true;
+				}
+			});
+
 			loaded_objects.push(obj.scene);
 
 			if(obj['animations'].length !== 0){

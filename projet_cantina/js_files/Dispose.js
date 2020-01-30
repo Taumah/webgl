@@ -19,6 +19,7 @@ function disposeTables(table_model ){
 	table.position.set(0 , y_table ,100 );
 	scene.add(table);
 
+
 	table = table_model.clone();
 	table.position.set( 150, y_table ,300 );
 	scene.add(table);
