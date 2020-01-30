@@ -1,4 +1,3 @@
-
 function Dispose() {
 
 	disposeTables(loaded_objects[0] ); // [0] table
@@ -57,4 +56,5 @@ function disposeBuilding(building ) {
 function disposeDeathStar(death){
 	death.position.set(0,1000,0);
 	scene.add(death);
+	
 }
