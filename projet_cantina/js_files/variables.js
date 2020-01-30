@@ -20,3 +20,4 @@ let loadingManager , loader;
 
 let ambientLight, directionalLight;
 
+let star_sphere , death_star_mat;

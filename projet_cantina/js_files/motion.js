@@ -53,13 +53,13 @@ export function init() {
 
 	// create an object for the sound to play from
 	var sphere = new THREE.SphereGeometry( 20, 32, 16 );
-	var material = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
-	var mesh = new THREE.Mesh( sphere, material );
-	mesh.position.set(0,1000,0);
-	scene.add( mesh );
+	death_star_mat = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
+	star_sphere = new THREE.Mesh( sphere, death_star_mat );
+	star_sphere.position.set(0,1000,0);
+	scene.add( star_sphere );
 
 	// finally add the sound to the mesh
-	mesh.add( sound2 );
+	star_sphere.add( sound2 );
 
 	scene.fog = new THREE.FogExp2(0x8f8483, 0.00200);
 
