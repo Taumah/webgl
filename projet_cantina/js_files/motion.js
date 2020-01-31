@@ -154,6 +154,7 @@ function render() {
 
 	// var delta = clock.getDelta();
 
+	lasers.update();
 
 //	controls.update( clock.getDelta() );
 	renderer.render( scene, camera );

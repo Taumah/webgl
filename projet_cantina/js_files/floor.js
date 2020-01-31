@@ -18,6 +18,25 @@ export function createFloor(){
 
     floor.receiveShadow = true;
 
+    floor.add(createTrail());
 
     return floor;
+}
+
+function createTrail(){
+	let gravel = new THREE.TextureLoader().load('./textures/black_gravel.jpg');
+
+	gravel.wrapS = THREE.RepeatWrapping;
+	gravel.wrapT = THREE.RepeatWrapping;
+	gravel.repeat.set(10,3);
+
+	let floor_geo = new THREE.PlaneGeometry( 800,200,20,20);
+
+	let floor_text = new THREE.MeshPhongMaterial({map:gravel , side:THREE.DoubleSide});
+
+	let gravel_floor = new THREE.Mesh(floor_geo,floor_text);
+
+	gravel_floor.position.set(200,1,300);
+
+	return gravel_floor;
 }
