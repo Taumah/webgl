@@ -5,6 +5,7 @@ import {OrbitControls} from "./Dependencies/OrbitControls.js";
 import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
 
 import {createFloor} from "./floor.js";
+import {createLandscape} from "./landscape.js";
 import {CreateLasers} from "./lasers.js";
 
 let container = document.getElementById( 'container' );
@@ -63,6 +64,8 @@ export function init() {
 	floor = createFloor();
 	scene.add(floor);
 
+	landscape = createLandscape();
+	scene.add(landscape);
 	lasers = CreateLasers();
 	scene.add(lasers);
 

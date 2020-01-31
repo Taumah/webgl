@@ -11,15 +11,14 @@ let loaded_objects= [];
 let stats, clock;  // "plug-ins"
 let camera, scene, renderer , controls_1st_p;; // essentials
 
+let  landscape ;
 let listener ; // receives music from the world (~=~ ears in real life)
 
 let audioLoader;
 let music_cantina;
 let lasers;
-
 let  floor ;
 let controls;
-
 let loadingManager , loader;
 
 let ambientLight, directionalLight;
