@@ -9,8 +9,12 @@ let objects_locations = [ //paths to imported objects
 let loaded_objects= [];
 
 let stats, clock;  // "plug-ins"
-let camera, scene, renderer; // essentials
+let camera, scene, renderer , controls_1st_p;; // essentials
 
+let listener ; // receives music from the world (~=~ ears in real life)
+
+let audioLoader;
+let music_cantina;
 let lasers;
 
 let  floor ;
@@ -20,4 +24,4 @@ let loadingManager , loader;
 
 let ambientLight, directionalLight;
 
-let star_sphere , death_star_mat;
+let star_sphere , death_star_mat , inside_DS_sphere ;

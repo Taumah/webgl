@@ -19,26 +19,19 @@ export function init() {
 
 	clock = new THREE.Clock();
 
-	var controls;
-	controls = new FirstPersonControls( camera, renderer.domElement );
-
-				controls.movementSpeed = 70;
-				controls.lookSpeed = 0.05;
-				controls.noFly = true;
-				controls.lookVertical = false;
-
-
-
-	var listener = new THREE.AudioListener;
+	listener = new THREE.AudioListener;
 	camera.add(listener);
-	var sound2 = new THREE.PositionalAudio( listener );
 
-	var audioLoader = new THREE.AudioLoader();
+	createHumanCamera();
+
+	music_cantina = new THREE.PositionalAudio( listener );
+
+	audioLoader = new THREE.AudioLoader();
 		audioLoader.load( 'sound/Cantina2.mp3', function ( buffer ) {
-		sound2.setBuffer( buffer );
-		sound2.setLoop( true );
-		sound2.setRefDistance( 0.5 );
-		sound2.play();
+		music_cantina.setBuffer( buffer );
+		music_cantina.setLoop( true );
+		music_cantina.setRefDistance( 0.5 );
+		music_cantina.play();
 	} );
 
 	loadingManager = new THREE.LoadingManager();
@@ -52,14 +45,14 @@ export function init() {
 	};
 
 	// create an object for the sound to play from
-	var sphere = new THREE.SphereGeometry( 20, 32, 16 );
+	inside_DS_sphere = new THREE.SphereGeometry( 20, 32, 16 );
 	death_star_mat = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
-	star_sphere = new THREE.Mesh( sphere, death_star_mat );
+	star_sphere = new THREE.Mesh( inside_DS_sphere , death_star_mat );
 	star_sphere.position.set(0,1000,0);
 	scene.add( star_sphere );
 
 	// finally add the sound to the mesh
-	star_sphere.add( sound2 );
+	star_sphere.add( music_cantina );
 
 	scene.fog = new THREE.FogExp2(0x8f8483, 0.00200);
 
@@ -69,8 +62,10 @@ export function init() {
 
 	floor = createFloor();
 	scene.add(floor);
+
 	lasers = CreateLasers();
 	scene.add(lasers);
+
 	for(let i = 0 ; i < objects_locations.length ; i++) {
 		loader.load(object_path + objects_locations[i] , function(obj){
 
@@ -121,7 +116,6 @@ function onWindowResize() {
 export function animate() {
 
 	requestAnimationFrame( animate );
-	controls.update();
 
 	render();
 	stats.update();
@@ -131,6 +125,7 @@ export function animate() {
 function render() {
 
 	// var delta = clock.getDelta();
+
 
 	controls.update( clock.getDelta() );
 	renderer.render( scene, camera );
@@ -159,6 +154,16 @@ function createRenderer() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	container.appendChild( renderer.domElement );
 
+}
+
+function createHumanCamera(){
+
+	controls_1st_p = new FirstPersonControls( camera, renderer.domElement );
+	controls_1st_p.movementSpeed = 70;
+	controls_1st_p.lookSpeed = 0.05;
+	controls_1st_p.noFly = true;
+
+	controls_1st_p.lookVertical = false;
 }
 
 function putShadow() {

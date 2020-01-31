@@ -2,17 +2,22 @@ import * as THREE from './Dependencies/three.module.js';
 
 export function CreateLasers(){
 	let x = 50 , y =150 , z =50;
-	let light = new THREE.PointLight( 0xff0000, 20, 30 );
+	let light = new THREE.PointLight( 0xff0000, 20, 200 );
+	light.position.set( 0, 0 , 0 );
+
+
 	let cylinder_shape = new THREE.CylinderGeometry( 10, 10, 20, 20 );
-	light.position.set( x-10, y-10 , z-10 );
+	let cylinder_mat = new THREE.MeshPhongMaterial( {color: 0x006600} );
+	let laser = new THREE.Mesh( cylinder_shape, cylinder_mat );
 
-	let cylinder_mat = new THREE.MeshPhongMaterial( {color: 0xdddddd} );
-	let cylinder = new THREE.Mesh( cylinder_shape, cylinder_mat );
-	cylinder.position.set(x,y,z);
+	laser.add(light);
 
-	cylinder.transparent = true;
-	cylinder.opacity = 0.1;
+	laser.position.set(x,y,z);
+	laser.opacity = 0.6;
 
-	cylinder.add(light);
-	return cylinder;
+	laser.castShadow , laser.receiveShadow= true , true ;
+	laser.transparent = true;
+
+
+	return laser;
 }
