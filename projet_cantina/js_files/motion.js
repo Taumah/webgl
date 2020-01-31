@@ -55,7 +55,7 @@ export function init() {
 	// finally add the sound to the mesh
 	star_sphere.add( music_cantina );
 
-	scene.fog = new THREE.FogExp2(0x8f8483, 0.00200);
+	//scene.fog = new THREE.FogExp2(0x8f8483, 0.00200);
 
 
 
