@@ -55,7 +55,7 @@ export function init() {
 	// finally add the sound to the mesh
 	star_sphere.add( music_cantina );
 
-	scene.fog = new THREE.FogExp2(0x8f8483, 0.00200);
+	scene.fog = new THREE.FogExp2(0x8f8483, 0.0004);
 
 
 
@@ -138,7 +138,7 @@ function render() {
 
 function createCamera() {
 
-	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 4000 );
+	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 6000 );
 	camera.position.set( 750, 60, -240 );
 	camera.lookAt( 1000, 50, -300 );
 
