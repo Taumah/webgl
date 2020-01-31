@@ -4,7 +4,7 @@ import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
 import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
 
-import {createFloor} from "./floor.js";
+import {createFloor , createTrail} from "./floor.js";
 import {createLandscape} from "./landscape.js";
 import {CreateLasers} from "./lasers.js";
 
@@ -55,7 +55,7 @@ export function init() {
 	// finally add the sound to the mesh
 	star_sphere.add( music_cantina );
 
-	scene.fog = new THREE.FogExp2(0x8f8483, 0.0004);
+	scene.fog = new THREE.FogExp2(0x8f8483, 0.0006);
 
 
 
@@ -63,6 +63,9 @@ export function init() {
 
 	floor = createFloor();
 	scene.add(floor);
+
+	gravel_floor  = createTrail();
+	scene.add(gravel_floor);
 
 	landscape = createLandscape();
 	scene.add(landscape);

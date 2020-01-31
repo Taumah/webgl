@@ -24,3 +24,4 @@ let loadingManager , loader;
 let ambientLight, directionalLight;
 
 let star_sphere , death_star_mat , inside_DS_sphere ;
+let gravel_floor;
