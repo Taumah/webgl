@@ -11,10 +11,9 @@ let loaded_objects= [];
 let stats, clock;  // "plug-ins"
 let camera, scene, renderer; // essentials
 
-
+let  landscape ;
 let  floor ;
 let controls;
-
 let loadingManager , loader;
 
 let ambientLight, directionalLight;
