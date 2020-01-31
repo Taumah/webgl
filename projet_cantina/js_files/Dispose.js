@@ -11,8 +11,8 @@ function Dispose() {
 function disposeTables(table_model ){
 
 	let table;
-	const y_table = 15;
-	table_model.scale.set(0.4,0.4,0.4); // every table has the same dimensions (thx IKEA)
+	const y_table = 18;
+	table_model.scale.set(0.45,0.45,0.45); // every table has the same dimensions (thx IKEA)
 
 
 	table = table_model.clone();
@@ -51,7 +51,7 @@ function disposeTables(table_model ){
 
 function disposeBuilding(building , moutain ) {
 
-
+	// building.add(moutain);
 
 	building.scale.set(1,1,1);
 

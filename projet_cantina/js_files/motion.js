@@ -47,10 +47,10 @@ export function init() {
 
 	};
 
-	//Fbx loader 
+	//Fbx loader
 	var mixer;
 	var loader = new FBXLoader();
-				loader.load( 'models/Pointingv1.fbx', function ( object ) {
+				loader.load( 'models/red-canyon-landscape/source/mountain.fbx', function ( object ) {
 
 					mixer = new THREE.AnimationMixer( object );
 
@@ -66,6 +66,9 @@ export function init() {
 						}
 					});
 
+
+					object.scale.set(1,1,1);
+					console.log("hehe" + object);
 					scene.add( object );
 
 				} );
@@ -80,13 +83,7 @@ export function init() {
 	// finally add the sound to the mesh
 	star_sphere.add( music_cantina );
 
-<<<<<<< HEAD
 	scene.fog = new THREE.FogExp2(0x8f8483, 0.0006);
-=======
-	scene.fog = new THREE.FogExp2(0x8f8483, 0.00040);
->>>>>>> 025af22a14cbc0b78c3f880a37a71ec899754183
-
-
 
 	loader = new ColladaLoader( loadingManager );
 
@@ -172,7 +169,7 @@ function createCamera() {
 
 	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 10000 );
 	camera.position.set( 750, 60, -240 );
-	camera.lookAt( 1000, 50, -300 );
+	camera.lookAt( 870, 50, -300 );
 
 	controls = new OrbitControls( camera, renderer.domElement );
 
