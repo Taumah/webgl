@@ -20,7 +20,7 @@ export function createLandscape(){
     for (let i = 0; i < 6; i++)
       materialArray[i].side = THREE.BackSide;
        
-    let skyboxGeo = new THREE.SphereGeometry( 2000, 1000, 1000);
+    let skyboxGeo = new THREE.SphereGeometry( 4000, 20, 20);
     let landscape = new THREE.Mesh( skyboxGeo, materialArray );
 
     return landscape;
