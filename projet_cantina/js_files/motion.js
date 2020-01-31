@@ -2,9 +2,11 @@ import * as THREE from './Dependencies/three.module.js';
 import Stats from './Dependencies/stats.module.js';
 import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
+import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
 
 import {createFloor} from "./floor.js";
 import {createLandscape} from "./landscape.js";
+import {CreateLasers} from "./lasers.js";
 
 let container = document.getElementById( 'container' );
 
@@ -18,6 +20,21 @@ export function init() {
 
 	clock = new THREE.Clock();
 
+	listener = new THREE.AudioListener;
+	camera.add(listener);
+
+	createHumanCamera();
+
+	music_cantina = new THREE.PositionalAudio( listener );
+
+	audioLoader = new THREE.AudioLoader();
+		audioLoader.load( 'sound/Cantina2.mp3', function ( buffer ) {
+		music_cantina.setBuffer( buffer );
+		music_cantina.setLoop( true );
+		music_cantina.setRefDistance( 0.5 );
+		music_cantina.play();
+	} );
+
 	loadingManager = new THREE.LoadingManager();
 
 	loadingManager.onLoad = function () {
@@ -28,6 +45,20 @@ export function init() {
 
 	};
 
+	// create an object for the sound to play from
+	inside_DS_sphere = new THREE.SphereGeometry( 20, 32, 16 );
+	death_star_mat = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
+	star_sphere = new THREE.Mesh( inside_DS_sphere , death_star_mat );
+	star_sphere.position.set(0,1000,0);
+	scene.add( star_sphere );
+
+	// finally add the sound to the mesh
+	star_sphere.add( music_cantina );
+
+	scene.fog = new THREE.FogExp2(0x8f8483, 0.00200);
+
+
+
 	loader = new ColladaLoader( loadingManager );
 
 	floor = createFloor();
@@ -35,19 +66,26 @@ export function init() {
 
 	landscape = createLandscape();
 	scene.add(landscape);
+	lasers = CreateLasers();
+	scene.add(lasers);
 
 	for(let i = 0 ; i < objects_locations.length ; i++) {
 		loader.load(object_path + objects_locations[i] , function(obj){
 
+
 			loaded_objects.push(obj.scene);
+
 
 			if(obj['animations'].length !== 0){
 				console.log("some work has to be done !");
 			}
 
-		}) ;
 
-	} // loading and adding shadow to every imported object
+		}) ;
+	}
+
+
+	// loading and adding shadow to every imported object
 	putShadow();// need to find where to put this
 
 	ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
@@ -74,13 +112,13 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	controls.handleResize();
 
 }
 
 export function animate() {
 
 	requestAnimationFrame( animate );
-	controls.update();
 
 	render();
 	stats.update();
@@ -90,6 +128,9 @@ export function animate() {
 function render() {
 
 	// var delta = clock.getDelta();
+
+
+	controls.update( clock.getDelta() );
 	renderer.render( scene, camera );
 
 }
@@ -116,6 +157,16 @@ function createRenderer() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	container.appendChild( renderer.domElement );
 
+}
+
+function createHumanCamera(){
+
+	controls_1st_p = new FirstPersonControls( camera, renderer.domElement );
+	controls_1st_p.movementSpeed = 70;
+	controls_1st_p.lookSpeed = 0.05;
+	controls_1st_p.noFly = true;
+
+	controls_1st_p.lookVertical = false;
 }
 
 function putShadow() {
