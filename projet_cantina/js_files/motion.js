@@ -2,7 +2,9 @@ import * as THREE from './Dependencies/three.module.js';
 import Stats from './Dependencies/stats.module.js';
 import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
-import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
+import { FBXLoader } from './Dependencies/FBXLoader.js';
+
+// import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
 
 import {createFloor , createTrail} from "./floor.js";
 import {createLandscape} from "./landscape.js";
@@ -23,7 +25,7 @@ export function init() {
 	listener = new THREE.AudioListener;
 	camera.add(listener);
 
-	createHumanCamera();
+	//createHumanCamera();
 
 	music_cantina = new THREE.PositionalAudio( listener );
 
@@ -45,6 +47,29 @@ export function init() {
 
 	};
 
+	//Fbx loader 
+	var mixer;
+	var loader = new FBXLoader();
+				loader.load( 'models/Pointingv1.fbx', function ( object ) {
+
+					mixer = new THREE.AnimationMixer( object );
+
+					var action = mixer.clipAction( object.animations[ 0 ] );
+					action.play();
+					object.traverse( function ( child ) {
+
+						if ( child.isMesh ) {
+
+							child.castShadow = true;
+							child.receiveShadow = true;
+
+						}
+					});
+
+					scene.add( object );
+
+				} );
+
 	// create an object for the sound to play from
 	inside_DS_sphere = new THREE.SphereGeometry( 20, 32, 16 );
 	death_star_mat = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
@@ -55,7 +80,11 @@ export function init() {
 	// finally add the sound to the mesh
 	star_sphere.add( music_cantina );
 
+<<<<<<< HEAD
 	scene.fog = new THREE.FogExp2(0x8f8483, 0.0006);
+=======
+	scene.fog = new THREE.FogExp2(0x8f8483, 0.00040);
+>>>>>>> 025af22a14cbc0b78c3f880a37a71ec899754183
 
 
 
@@ -115,7 +144,7 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	controls.handleResize();
+	//controls.handleResize();
 
 }
 
@@ -134,14 +163,14 @@ function render() {
 
 	lasers.update();
 
-	controls.update( clock.getDelta() );
+//	controls.update( clock.getDelta() );
 	renderer.render( scene, camera );
 
 }
 
 function createCamera() {
 
-	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 6000 );
+	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 10000 );
 	camera.position.set( 750, 60, -240 );
 	camera.lookAt( 1000, 50, -300 );
 
@@ -163,7 +192,7 @@ function createRenderer() {
 
 }
 
-function createHumanCamera(){
+/*function createHumanCamera(){
 
 	controls_1st_p = new FirstPersonControls( camera, renderer.domElement );
 	controls_1st_p.movementSpeed = 70;
@@ -171,7 +200,7 @@ function createHumanCamera(){
 	controls_1st_p.noFly = true;
 
 	controls_1st_p.lookVertical = false;
-}
+}*/
 
 function putShadow() {
 
