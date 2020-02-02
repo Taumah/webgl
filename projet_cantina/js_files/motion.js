@@ -90,7 +90,7 @@ export function init() {
 	}
 
 	var loader = new FBXLoader();
-	loader.load( 'models/Pointingv1.fbx', function ( object ) {
+	loader.load( 'models/Pointing2.fbx', function ( object ) {
 
 		object.position.set(1600,0,-650);
 		object.rotation.y = Math.PI/2;
