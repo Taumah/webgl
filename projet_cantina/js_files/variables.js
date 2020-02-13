@@ -3,7 +3,9 @@ let objects_locations = [ //paths to imported objects
 	"table_cantina/table_cantina.dae",
 	"building_cantina/building_cantina.dae",
 	"death-star.dae",
-	"slave-leia-from-star-wars/0.dae"
+	"slave-leia-from-star-wars/0.dae",
+	"jabba-the-hutt-from-star-wars-battlefront/jabba.dae"
+	
 	// "saxophonist/saxophonist.dae"
 ];
 
