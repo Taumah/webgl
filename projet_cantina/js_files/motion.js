@@ -6,7 +6,7 @@ import { FBXLoader } from './Dependencies/FBXLoader.js';
 
 // import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
 
-import {createFloor} from "./floor.js";
+import {createFloor , createTrail} from "./floor.js";
 import {createLandscape} from "./landscape.js";
 import {CreateLasers} from "./lasers.js";
 
@@ -47,9 +47,6 @@ export function init() {
 
 	};
 
-	//Fbx loader 
-
-
 	// create an object for the sound to play from
 	inside_DS_sphere = new THREE.SphereGeometry( 20, 32, 16 );
 	death_star_mat = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
@@ -60,14 +57,15 @@ export function init() {
 	// finally add the sound to the mesh
 	star_sphere.add( music_cantina );
 
-	scene.fog = new THREE.FogExp2(0x8f8483, 0.00040);
-
-
+	scene.fog = new THREE.FogExp2(0x8f8483, 0.0006);
 
 	loader = new ColladaLoader( loadingManager );
 
 	floor = createFloor();
 	scene.add(floor);
+
+	gravel_floor  = createTrail();
+	scene.add(gravel_floor);
 
 	landscape = createLandscape();
 	scene.add(landscape);
@@ -170,7 +168,7 @@ function createCamera() {
 
 	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 10000 );
 	camera.position.set( 750, 60, -240 );
-	camera.lookAt( 1000, 50, -300 );
+	camera.lookAt( 870, 50, -300 );
 
 	controls = new OrbitControls( camera, renderer.domElement );
 

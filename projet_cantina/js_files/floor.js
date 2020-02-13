@@ -1,7 +1,6 @@
 import * as THREE from './Dependencies/three.module.js';
 
 export function createFloor(){
-
      let sand = new THREE.TextureLoader().load('./textures/good_good_sand.jpg');
 
     sand.wrapS = THREE.RepeatWrapping;
@@ -17,26 +16,26 @@ export function createFloor(){
     floor.position.set(1500,0,1500); // buildings' heights /2
 
     floor.receiveShadow = true;
-
-    floor.add(createTrail());
-
     return floor;
 }
 
-function createTrail(){
+export function createTrail(){
 	let gravel = new THREE.TextureLoader().load('./textures/black_gravel.jpg');
 
 	gravel.wrapS = THREE.RepeatWrapping;
 	gravel.wrapT = THREE.RepeatWrapping;
-	gravel.repeat.set(10,3);
+	gravel.repeat.set(50,8);
 
-	let floor_geo = new THREE.PlaneGeometry( 800,200,20,20);
+	let floor_geo = new THREE.PlaneGeometry( 1000,180,20,20);
 
 	let floor_text = new THREE.MeshPhongMaterial({map:gravel , side:THREE.DoubleSide});
 
-	let gravel_floor = new THREE.Mesh(floor_geo,floor_text);
+	gravel_floor = new THREE.Mesh(floor_geo,floor_text);
 
-	gravel_floor.position.set(200,1,300);
+	gravel_floor.position.set(770,1,-570);
+
+	gravel_floor.receiveShadow = true;
+	gravel_floor.rotation.x = Math.PI / 2;
 
 	return gravel_floor;
 }
