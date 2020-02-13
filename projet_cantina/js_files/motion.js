@@ -2,9 +2,11 @@ import * as THREE from './Dependencies/three.module.js';
 import Stats from './Dependencies/stats.module.js';
 import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
-import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
+import { FBXLoader } from './Dependencies/FBXLoader.js';
 
-import {createFloor} from "./floor.js";
+// import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
+
+import {createFloor , createTrail} from "./floor.js";
 import {createLandscape} from "./landscape.js";
 import {CreateLasers} from "./lasers.js";
 
@@ -23,7 +25,7 @@ export function init() {
 	listener = new THREE.AudioListener;
 	camera.add(listener);
 
-	createHumanCamera();
+	//createHumanCamera();
 
 	music_cantina = new THREE.PositionalAudio( listener );
 
@@ -55,14 +57,15 @@ export function init() {
 	// finally add the sound to the mesh
 	star_sphere.add( music_cantina );
 
-	//scene.fog = new THREE.FogExp2(0x8f8483, 0.00200);
-
-
+	scene.fog = new THREE.FogExp2(0x8f8483, 0.0006);
 
 	loader = new ColladaLoader( loadingManager );
 
 	floor = createFloor();
 	scene.add(floor);
+
+	gravel_floor  = createTrail();
+	scene.add(gravel_floor);
 
 	landscape = createLandscape();
 	scene.add(landscape);
@@ -84,6 +87,28 @@ export function init() {
 		}) ;
 	}
 
+	var loader = new FBXLoader();
+	loader.load( 'models/Pointing2.fbx', function ( object ) {
+
+		object.position.set(1600,0,-650);
+		object.rotation.y = Math.PI/2;
+		mixer = new THREE.AnimationMixer( object );
+
+		var action = mixer.clipAction( object.animations[ 0 ] );
+		action.play();
+		object.traverse( function ( child ) {
+
+			if ( child.isMesh ) {
+
+				child.castShadow = true;
+				child.receiveShadow = true;
+
+			}
+		});
+
+		scene.add( object );
+
+	} );
 
 	// loading and adding shadow to every imported object
 	putShadow();// need to find where to put this
@@ -93,7 +118,7 @@ export function init() {
 
 	directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
 	directionalLight.position.set( 1, 1, 0 ).normalize();
-	scene.add( directionalLight );
+	scene.add( directionalLight ); 
 
 	//
 
@@ -112,7 +137,7 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	controls.handleResize();
+	//controls.handleResize();
 
 }
 
@@ -120,6 +145,9 @@ export function animate() {
 
 	requestAnimationFrame( animate );
 
+	
+	var delta = clock.getDelta();
+	if ( mixer ) mixer.update( delta );
 	render();
 	stats.update();
 
@@ -129,17 +157,17 @@ function render() {
 
 	// var delta = clock.getDelta();
 
+	lasers.update();
 
-	controls.update( clock.getDelta() );
+//	controls.update( clock.getDelta() );
 	renderer.render( scene, camera );
 
 }
 
 function createCamera() {
-
-	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 6000 );
+	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 10000 );
 	camera.position.set( 750, 60, -240 );
-	camera.lookAt( 1000, 50, -300 );
+	camera.lookAt( 870, 50, -300 );
 
 	controls = new OrbitControls( camera, renderer.domElement );
 
@@ -159,7 +187,7 @@ function createRenderer() {
 
 }
 
-function createHumanCamera(){
+/*function createHumanCamera(){
 
 	controls_1st_p = new FirstPersonControls( camera, renderer.domElement );
 	controls_1st_p.movementSpeed = 70;
@@ -167,7 +195,7 @@ function createHumanCamera(){
 	controls_1st_p.noFly = true;
 
 	controls_1st_p.lookVertical = false;
-}
+}*/
 
 function putShadow() {
 

@@ -18,6 +18,12 @@ export function CreateLasers(){
 	laser.castShadow , laser.receiveShadow= true , true ;
 	laser.transparent = true;
 
+	laser.update = function () { //callback for `animate` function (motion.js)
+
+		lasers.position.x += Math.random()  *5 -Math.random()  *5;
+		lasers.position.z += Math.random() *5  -Math.random()  *5;
+	};
+
 
 	return laser;
 }
