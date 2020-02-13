@@ -33,7 +33,7 @@ export function init() {
 		audioLoader.load( 'sound/Cantina2.mp3', function ( buffer ) {
 		music_cantina.setBuffer( buffer );
 		music_cantina.setLoop( true );
-		music_cantina.setRefDistance( 0.5 );
+		music_cantina.setRefDistance( 0.2 );
 		music_cantina.play();
 	} );
 
@@ -51,7 +51,7 @@ export function init() {
 	inside_DS_sphere = new THREE.SphereGeometry( 20, 32, 16 );
 	death_star_mat = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
 	star_sphere = new THREE.Mesh( inside_DS_sphere , death_star_mat );
-	star_sphere.position.set(0,1000,0);
+	star_sphere.position.set(-100,-50,-500);
 	scene.add( star_sphere );
 
 	// finally add the sound to the mesh

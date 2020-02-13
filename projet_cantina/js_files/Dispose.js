@@ -3,6 +3,7 @@ function Dispose() {
 	disposeTables(loaded_objects[0] ); // [0] table
 	disposeBuilding(loaded_objects[1] , loaded_objects[3]); // [1] building [3]moutain
 	disposeDeathStar(loaded_objects[2]); //[2] death star
+	disposeLeia(loaded_objects[3]);
 
 
 }
@@ -67,5 +68,11 @@ function disposeDeathStar(death){
 	death.position.set(0,1000,0);
 	scene.add(death);
 
+}
+function disposeLeia(leia){
+	leia.position.set(100,0,-500);
+	leia.scale.set(50, 50, 50);
+	leia.rotation.z = 210;
+	scene.add(leia);
 }
 
