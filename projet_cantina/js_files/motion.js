@@ -4,21 +4,20 @@ import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
 import { FBXLoader } from './Dependencies/FBXLoader.js';
 
-// import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
-
 import {createFloor , createTrail} from "./floor.js";
 import {createLandscape} from "./landscape.js";
 import {CreateLasers} from "./lasers.js";
+import {createCamera , updateCamPos} from "./camera.js";
 
 let container = document.getElementById( 'container' );
-
 
 export function init() {
 	createRenderer(); //essential object
 
-	createCamera(); // orbit control and camera are set
+	createCamera(); // 1st person control
 
 	scene = new THREE.Scene();
+	scene.add( PointerLock.getObject() );
 
 	clock = new THREE.Clock();
 
@@ -52,8 +51,6 @@ export function init() {
 
 	scene.fog = new THREE.FogExp2(0x8f8483, 0.0006);
 
-	
-
 	floor = createFloor();
 	scene.add(floor);
 
@@ -64,7 +61,6 @@ export function init() {
 	scene.add(landscape);
 	lasers = CreateLasers();
 	scene.add(lasers);
-
 	var loader = new FBXLoader();
 	loader.load( 'models/Pointing2.fbx', function ( object ) {
 
@@ -114,45 +110,31 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	//controls.handleResize();
 
 }
 
 export function animate() {
 
 	requestAnimationFrame( animate );
-
-	
+	if ( PointerLock.isLocked === true ) {
+		updateCamPos()
+	}	
 	var delta = clock.getDelta();
 	if ( mixer ) mixer.update( delta );
-	render();
 	stats.update();
-
+	render();
 }
 
 function render() {
 
-	// var delta = clock.getDelta();
+	let delta = clock.getDelta();
 
+	stats.update(delta);
 	lasers.update();
+	// camControls.update(delta);
 
-//	controls.update( clock.getDelta() );
+	// PointerLock.update( clock.getDelta() );
 	renderer.render( scene, camera );
-
-}
-
-function createCamera() {
-	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 10000 );
-	camera.position.set( 2000, 100, -600 );
-	camera.lookAt( 2000, 80, -600 );
-
-	controls = new OrbitControls( camera, renderer.domElement );
-
-	controls.enable = true;
-	controls.enableKeys = true;
-
-	controls.update();
-
 }
 
 function createRenderer() {
@@ -163,18 +145,3 @@ function createRenderer() {
 	container.appendChild( renderer.domElement );
 
 }
-
-/*function createHumanCamera(){
-
-	controls_1st_p = new FirstPersonControls( camera, renderer.domElement );
-	controls_1st_p.movementSpeed = 70;
-	controls_1st_p.lookSpeed = 0.05;
-	controls_1st_p.noFly = true;
-
-	controls_1st_p.lookVertical = false;
-}*/
-
-
-
-
-
