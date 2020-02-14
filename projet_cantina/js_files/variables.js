@@ -15,7 +15,9 @@ let listener ; // receives music from the world (~=~ ears in real life)
 
 let audioLoader;
 let music_cantina;
-let lasers;
+
+let lasers = [];
+
 let  floor ;
 
 let loadingManager;
@@ -24,7 +26,7 @@ let loader, loader1, loader2, loader3, loader4, loader5;
 let ambientLight, directionalLight;
 
 let star_sphere , death_star_mat , inside_DS_sphere ;
-var mixer;
+let mixer;
 let gravel_floor;
 
 

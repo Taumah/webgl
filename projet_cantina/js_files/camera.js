@@ -8,9 +8,10 @@ let direction = new THREE.Vector3();
 
 export function createCamera() {
 
-	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 4000 );
-	camera.position.y = human_size;
+	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 7000 );
 
+	camera.position.set(1800,human_size,-600);
+	camera.lookAt(-200,human_size,-600);
 
 	PointerLock = new PointerLockControls( camera );
 

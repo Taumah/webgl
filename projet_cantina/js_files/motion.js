@@ -11,7 +11,13 @@ import {createCamera , updateCamPos} from "./camera.js";
 
 let container = document.getElementById( 'container' );
 
+
+
+
 export function init() {
+	window.addEventListener("click" , function () {
+		console.log(camera.position);
+	})
 	createRenderer(); //essential object
 
 	createCamera(); // 1st person control
@@ -24,7 +30,6 @@ export function init() {
 	listener = new THREE.AudioListener;
 	camera.add(listener);
 
-	//createHumanCamera();
 
 	music_cantina = new THREE.PositionalAudio( listener );
 
@@ -59,16 +64,19 @@ export function init() {
 
 	landscape = createLandscape();
 	scene.add(landscape);
-	lasers = CreateLasers();
-	scene.add(lasers);
-	var loader = new FBXLoader();
+	CreateLasers();
+
+	let loader = new FBXLoader();
 	loader.load( 'models/Pointing2.fbx', function ( object ) {
 
 		object.position.set(1600,0,-650);
 		object.rotation.y = Math.PI/2;
+
+		object.scale.set(0.7,0.7,0.7);
+
 		mixer = new THREE.AnimationMixer( object );
 
-		var action = mixer.clipAction( object.animations[ 0 ] );
+		let action = mixer.clipAction( object.animations[ 0 ] );
 		action.play();
 		object.traverse( function ( child ) {
 
@@ -91,7 +99,7 @@ export function init() {
 
 	directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
 	directionalLight.position.set( 1, 1, 0 ).normalize();
-	scene.add( directionalLight ); 
+	scene.add( directionalLight );
 
 	//
 
@@ -118,23 +126,31 @@ export function animate() {
 	requestAnimationFrame( animate );
 	if ( PointerLock.isLocked === true ) {
 		updateCamPos()
-	}	
-	var delta = clock.getDelta();
+	}
+	let delta = clock.getDelta();
 	if ( mixer ) mixer.update( delta );
 	stats.update();
-	render();
+	render(delta);
 }
 
-function render() {
-
-	let delta = clock.getDelta();
+function render(delta) {
 
 	stats.update(delta);
-	lasers.update();
-	// camControls.update(delta);
 
-	// PointerLock.update( clock.getDelta() );
 	renderer.render( scene, camera );
+
+	lasers.forEach(function (element) {
+		if(element.position.z <= -900){
+			element.forward = 1;
+		}
+		else if(element.position.z >= -300){
+			element.forward = -1;
+		}
+
+		element.goLaser(element.forward * delta);
+
+	});
+
 }
 
 function createRenderer() {
