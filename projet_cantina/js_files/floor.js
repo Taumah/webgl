@@ -26,7 +26,7 @@ export function createTrail(){
 	gravel.wrapT = THREE.RepeatWrapping;
 	gravel.repeat.set(50,8);
 
-	let floor_geo = new THREE.PlaneGeometry( 1000,180,20,20);
+	let floor_geo = new THREE.PlaneGeometry( 5000,180,20,20);
 
 	let floor_text = new THREE.MeshPhongMaterial({map:gravel , side:THREE.DoubleSide});
 
