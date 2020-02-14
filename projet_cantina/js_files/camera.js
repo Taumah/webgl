@@ -111,12 +111,12 @@ export function updateCamPos() {
 	raycaster.ray.origin.copy( PointerLock.getObject().position );
 	raycaster.ray.origin.y -= human_size;
 
-	var intersections = raycaster.intersectObjects( objects );
+	let intersections = raycaster.intersectObjects( objects );
 
-	var onObject = intersections.length > 0;
+	let onObject = intersections.length > 0;
 
-	var time = performance.now();
-	var delta = ( time - prevTime ) / 1000;
+	let time = performance.now();
+	let delta = ( time - prevTime ) / 1000;
 
 	velocity.x -= velocity.x  * delta;
 	velocity.z -= velocity.z  * delta;
