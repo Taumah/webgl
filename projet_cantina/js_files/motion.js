@@ -4,21 +4,25 @@ import { ColladaLoader } from './Dependencies/ColladaLoader.js';
 import {OrbitControls} from "./Dependencies/OrbitControls.js";
 import { FBXLoader } from './Dependencies/FBXLoader.js';
 
-// import { FirstPersonControls } from './Dependencies/FirstPersonControls.js';
-
 import {createFloor , createTrail} from "./floor.js";
 import {createLandscape} from "./landscape.js";
 import {CreateLasers} from "./lasers.js";
+import {createCamera } from "./camera.js";
 
 let container = document.getElementById( 'container' );
+let prevTime = performance.now();
+let velocity = new THREE.Vector3();
+let direction = new THREE.Vector3();
+let vertex = new THREE.Vector3();
 
 
 export function init() {
 	createRenderer(); //essential object
 
-	createCamera(); // orbit control and camera are set
+	createCamera(); // 1st person control
 
 	scene = new THREE.Scene();
+	scene.add( controls.getObject() );
 
 	clock = new THREE.Clock();
 
@@ -48,13 +52,13 @@ export function init() {
 	};
 
 	//Fbx loader
-	var mixer;
-	var loader = new FBXLoader();
-				loader.load( 'models/red-canyon-landscape/source/mountain.fbx', function ( object ) {
+	let mixer;
+	fbx_loader = new FBXLoader();
+	fbx_loader.load( 'models/red-canyon-landscape/source/mountain.fbx', function ( object ) {
 
 					mixer = new THREE.AnimationMixer( object );
 
-					var action = mixer.clipAction( object.animations[ 0 ] );
+					let action = mixer.clipAction( object.animations[ 0 ] );
 					action.play();
 					object.traverse( function ( child ) {
 
@@ -85,7 +89,7 @@ export function init() {
 
 	scene.fog = new THREE.FogExp2(0x8f8483, 0.0006);
 
-	loader = new ColladaLoader( loadingManager );
+	fbx_loader = new ColladaLoader( loadingManager );
 
 	floor = createFloor();
 	scene.add(floor);
@@ -99,7 +103,7 @@ export function init() {
 	scene.add(lasers);
 
 	for(let i = 0 ; i < objects_locations.length ; i++) {
-		loader.load(object_path + objects_locations[i] , function(obj){
+		fbx_loader.load(object_path + objects_locations[i] , function(obj){
 
 
 			loaded_objects.push(obj.scene);
@@ -141,7 +145,6 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	//controls.handleResize();
 
 }
 
@@ -149,35 +152,68 @@ export function animate() {
 
 	requestAnimationFrame( animate );
 
-	render();
-	stats.update();
+	if ( controls.isLocked === true ) {
 
+		raycaster.ray.origin.copy( controls.getObject().position );
+		raycaster.ray.origin.y -= 10;
+
+		var intersections = raycaster.intersectObjects( objects );
+
+		var onObject = intersections.length > 0;
+
+		var time = performance.now();
+		var delta = ( time - prevTime ) / 1000;
+
+		velocity.x -= velocity.x * 10.0 * delta;
+		velocity.z -= velocity.z * 10.0 * delta;
+
+		velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+
+		direction.z = Number( moveForward ) - Number( moveBackward );
+		direction.x = Number( moveRight ) - Number( moveLeft );
+		direction.normalize(); // this ensures consistent movements in all directions
+
+		if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
+		if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
+
+		if ( onObject === true ) {
+
+			velocity.y = Math.max( 0, velocity.y );
+			canJump = true;
+
+		}
+
+		controls.moveRight( - velocity.x * delta );
+		controls.moveForward( - velocity.z * delta );
+
+		controls.getObject().position.y += ( velocity.y * delta ); // new behavior
+
+		if ( controls.getObject().position.y < 10 ) {
+
+			velocity.y = 0;
+			controls.getObject().position.y = 10;
+
+			canJump = true;
+
+		}
+
+		prevTime = time;
+
+	}
+
+	render();
 }
 
 function render() {
 
-	// var delta = clock.getDelta();
+	let delta = clock.getDelta();
 
+	stats.update(delta);
 	lasers.update();
+	// camControls.update(delta);
 
-//	controls.update( clock.getDelta() );
+	// controls.update( clock.getDelta() );
 	renderer.render( scene, camera );
-
-}
-
-function createCamera() {
-
-	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 10000 );
-	camera.position.set( 750, 60, -240 );
-	camera.lookAt( 870, 50, -300 );
-
-	controls = new OrbitControls( camera, renderer.domElement );
-
-	controls.enable = true;
-	controls.enableKeys = true;
-
-	controls.update();
-
 }
 
 function createRenderer() {
@@ -188,16 +224,6 @@ function createRenderer() {
 	container.appendChild( renderer.domElement );
 
 }
-
-/*function createHumanCamera(){
-
-	controls_1st_p = new FirstPersonControls( camera, renderer.domElement );
-	controls_1st_p.movementSpeed = 70;
-	controls_1st_p.lookSpeed = 0.05;
-	controls_1st_p.noFly = true;
-
-	controls_1st_p.lookVertical = false;
-}*/
 
 function putShadow() {
 
