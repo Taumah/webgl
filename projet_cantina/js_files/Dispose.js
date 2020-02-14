@@ -1,16 +1,40 @@
-function Dispose() {
-
-	disposeTables(loaded_objects[0] ); // [0] table
-	disposeBuilding(loaded_objects[1] , loaded_objects[3]); // [1] building [3]moutain
-	disposeDeathStar(loaded_objects[2]); //[2] death star
-	disposeLeia(loaded_objects[3]); //Leia
-	disposeJabba(loaded_objects[4]); //Jabba
-
-
+function disposeCollada(loadingManager, ColladaLoader){
+	
+	loader = new ColladaLoader( loadingManager );
+	loader.load(model_table, function(collada){
+		table = collada.scene;
+		disposeTables(table);
+	})
+	loader1 = new ColladaLoader( loadingManager );
+	loader1.load(model_building, function(collada){
+		building = collada.scene;
+		disposeBuilding(building);
+	})
+	loader2 = new ColladaLoader( loadingManager );
+	loader2.load(model_death, function(collada){
+		death_star = collada.scene;
+		disposeDeathStar(death_star);
+	})
+	loader3 = new ColladaLoader( loadingManager );
+	loader3.load(model_leia, function(collada){
+		leia = collada.scene;
+		disposeLeia(leia);
+	})
+	loader4 = new ColladaLoader( loadingManager );
+	loader4.load(model_jabba, function(collada){
+		jabba = collada.scene;
+		disposeJabba(jabba);
+	})
+	loader5 = new ColladaLoader( loadingManager );
+	loader5.load(model_palpa, function(collada){
+		palpa = collada.scene;
+		disposePal(palpa);
+	})
 }
 
 
-function disposeTables(table_model ){
+
+function disposeTables(table_model){
 
 	let table;
 	const y_table = 18;
@@ -50,8 +74,7 @@ function disposeTables(table_model ){
 	table.position.set(-630 , y_table , -750);
 	scene.add(table);
 }
-
-function disposeBuilding(building , moutain ) {
+function disposeBuilding(building) {
 
 	// building.add(moutain);
 
@@ -70,16 +93,20 @@ function disposeDeathStar(death){
 	scene.add(death);
 
 }
-function disposeLeia(leia){
+function disposeJabba(leia){
 	leia.position.set(-600, 0, -600);
 	leia.scale.set(90, 90, 90);
 	leia.rotation.z = 240;
 	scene.add(leia);
 }
-function disposeJabba(jabba){
+function disposeLeia(jabba){
 	jabba.position.set(-600,0,-600);
 	jabba.scale.set(50,50,50);
 	jabba.rotation.z = 210;
 	scene.add(jabba);
+} 
+function disposePal(palpa){
+	palpa.position.set(-380, 0, -830);
+	palpa.scale.set(40,40,40);
+	scene.add(palpa);
 }
-

@@ -38,14 +38,7 @@ export function init() {
 	} );
 
 	loadingManager = new THREE.LoadingManager();
-
-	loadingManager.onLoad = function () {
-
-		Dispose();//places every loaded object on map
-		// (unfortunately already added with loading manager)
-
-
-	};
+	disposeCollada(loadingManager, ColladaLoader);
 
 	// create an object for the sound to play from
 	inside_DS_sphere = new THREE.SphereGeometry( 20, 32, 16 );
@@ -59,7 +52,7 @@ export function init() {
 
 	scene.fog = new THREE.FogExp2(0x8f8483, 0.0006);
 
-	loader = new ColladaLoader( loadingManager );
+	
 
 	floor = createFloor();
 	scene.add(floor);
@@ -71,21 +64,6 @@ export function init() {
 	scene.add(landscape);
 	lasers = CreateLasers();
 	scene.add(lasers);
-
-	for(let i = 0 ; i < objects_locations.length ; i++) {
-		loader.load(object_path + objects_locations[i] , function(obj){
-
-
-			loaded_objects.push(obj.scene);
-
-
-			if(obj['animations'].length !== 0){
-				console.log("some work has to be done !");
-			}
-
-
-		}) ;
-	}
 
 	var loader = new FBXLoader();
 	loader.load( 'models/Pointing2.fbx', function ( object ) {
@@ -111,7 +89,6 @@ export function init() {
 	} );
 
 	// loading and adding shadow to every imported object
-	putShadow();// need to find where to put this
 
 	ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
 	scene.add( ambientLight );
@@ -197,15 +174,7 @@ function createRenderer() {
 	controls_1st_p.lookVertical = false;
 }*/
 
-function putShadow() {
 
-	loaded_objects.forEach(element => element.traverse(function (node) {
-		if (node instanceof THREE.Mesh) {
-			node.castShadow = true;
-			node.receiveShadow = true;
-		}
-	}));
-}
 
 
 
