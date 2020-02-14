@@ -26,13 +26,13 @@ export function createTrail(){
 	gravel.wrapT = THREE.RepeatWrapping;
 	gravel.repeat.set(50,8);
 
-	let floor_geo = new THREE.PlaneGeometry( 1000,180,20,20);
+	let floor_geo = new THREE.PlaneGeometry( 1500,180,20,20);
 
 	let floor_text = new THREE.MeshPhongMaterial({map:gravel , side:THREE.DoubleSide});
 
 	gravel_floor = new THREE.Mesh(floor_geo,floor_text);
 
-	gravel_floor.position.set(770,1,-570);
+	gravel_floor.position.set(1000,1,-570);
 
 	gravel_floor.receiveShadow = true;
 	gravel_floor.rotation.x = Math.PI / 2;
