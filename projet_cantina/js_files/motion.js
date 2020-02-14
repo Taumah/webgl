@@ -15,9 +15,7 @@ let container = document.getElementById( 'container' );
 
 
 export function init() {
-	window.addEventListener("click" , function () {
-		console.log(camera.position);
-	})
+
 	createRenderer(); //essential object
 
 	createCamera(); // 1st person control
@@ -49,12 +47,14 @@ export function init() {
 	death_star_mat = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
 	star_sphere = new THREE.Mesh( inside_DS_sphere , death_star_mat );
 	star_sphere.position.set(-100,-50,-500);
+
+
 	scene.add( star_sphere );
 
 	// finally add the sound to the mesh
 	star_sphere.add( music_cantina );
 
-	scene.fog = new THREE.FogExp2(0x8f8483, 0.0006);
+	scene.fog = new THREE.FogExp2(0x8f8483, 0.00020);
 
 	floor = createFloor();
 	scene.add(floor);
@@ -69,10 +69,10 @@ export function init() {
 	let loader = new FBXLoader();
 	loader.load( 'models/Pointing2.fbx', function ( object ) {
 
-		object.position.set(1600,0,-650);
+		object.position.set(1700,0,-650);
 		object.rotation.y = Math.PI/2;
 
-		object.scale.set(0.7,0.7,0.7);
+		object.scale.set(0.4,0.4,0.4);
 
 		mixer = new THREE.AnimationMixer( object );
 
@@ -94,11 +94,15 @@ export function init() {
 
 	// loading and adding shadow to every imported object
 
-	ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+	ambientLight = new THREE.AmbientLight( 0xcccccc, 0.2 );
 	scene.add( ambientLight );
 
-	directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
-	directionalLight.position.set( 1, 1, 0 ).normalize();
+	directionalLight = new THREE.DirectionalLight( 0xffffff, 0.6 );
+	directionalLight.position.set( 300, 1000, -200 );
+	directionalLight.castShadow = true;
+	directionalLight.shadowDarkness = 1;
+
+	directionalLight.shadowCameraVisible = true;
 	scene.add( directionalLight );
 
 	//

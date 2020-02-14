@@ -1,33 +1,66 @@
 function disposeCollada(loadingManager, ColladaLoader){
-	
+
 	loader = new ColladaLoader( loadingManager );
 	loader.load(model_table, function(collada){
 		table = collada.scene;
+		table.traverse(function(child) {
+			child.castShadow = true;
+			child.receiveShadow = true;
+		});
+		// console.log(collada);
+
 		disposeTables(table);
 	})
 	loader1 = new ColladaLoader( loadingManager );
 	loader1.load(model_building, function(collada){
 		building = collada.scene;
+
+		building.traverse(function(child) {
+			child.castShadow = true;
+			child.receiveShadow = true;
+		});
+		// console.log(collada);
 		disposeBuilding(building);
+
 	})
 	loader2 = new ColladaLoader( loadingManager );
 	loader2.load(model_death, function(collada){
 		death_star = collada.scene;
+		death_star.traverse(function(child) {
+			child.castShadow = true;
+			child.receiveShadow = true;
+		});
+		// console.log(collada);
 		disposeDeathStar(death_star);
 	})
 	loader3 = new ColladaLoader( loadingManager );
 	loader3.load(model_leia, function(collada){
 		leia = collada.scene;
+		leia.traverse(function(child) {
+			child.castShadow = true;
+			child.receiveShadow = true;
+		});
+		// console.log(collada);
 		disposeLeia(leia);
 	})
 	loader4 = new ColladaLoader( loadingManager );
 	loader4.load(model_jabba, function(collada){
 		jabba = collada.scene;
+		jabba.traverse(function(child) {
+			child.castShadow = true;
+			child.receiveShadow = true;
+		});
+		// console.log(collada);
 		disposeJabba(jabba);
 	})
 	loader5 = new ColladaLoader( loadingManager );
 	loader5.load(model_palpa, function(collada){
 		palpa = collada.scene;
+		palpa.traverse(function(child) {
+			child.castShadow = true;
+			child.receiveShadow = true;
+		});
+		// console.log(collada);
 		disposePal(palpa);
 	})
 }
@@ -104,7 +137,7 @@ function disposeLeia(jabba){
 	jabba.scale.set(50,50,50);
 	jabba.rotation.z = 210;
 	scene.add(jabba);
-} 
+}
 function disposePal(palpa){
 	palpa.position.set(-380, 0, -830);
 	palpa.scale.set(40,40,40);

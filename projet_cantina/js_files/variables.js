@@ -44,3 +44,9 @@ let moveLeft = false;
 let moveRight = false;
 let canJump = false;
 let table, building, death_star, leia, jabba, palpa;
+
+let SCREEN_WIDTH = window.innerWidth;
+let SCREEN_HEIGHT = window.innerHeight;
+let aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+
+let frustumSize = 1000;
