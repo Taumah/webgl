@@ -6,7 +6,7 @@ import { FBXLoader } from './Dependencies/FBXLoader.js';
 
 import {createFloor , createTrail} from "./floor.js";
 import {createLandscape} from "./landscape.js";
-import {CreateLasers} from "./lasers.js";
+import {CreateLasers , check_collisions} from "./lasers.js";
 import {createCamera , updateCamPos} from "./camera.js";
 
 let container = document.getElementById( 'container' );
@@ -114,6 +114,10 @@ export function init() {
 
 	window.addEventListener( 'resize', onWindowResize, false );
 
+	// window.addEventListener("click" , function () {
+	// 	console.log(camera.position , lasers[0].position);
+	// });
+
 }
 
 function onWindowResize() {
@@ -152,7 +156,7 @@ function render(delta) {
 		}
 
 		element.goLaser(element.forward * delta);
-
+		check_collisions(element.position);
 	});
 
 }

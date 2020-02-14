@@ -24,3 +24,12 @@ export function CreateLasers(){
 }
 
 
+export function check_collisions(element){
+	let collision = element.z + 40 >= camera.position.z && element.z - 40 <= camera.position.z;
+
+	collision &= element.x + 40 >= camera.position.x && element.x - 40 <= camera.position.x;
+	// console.log("passe");
+	if(collision === true){
+		console.log("die");
+	}
+}
