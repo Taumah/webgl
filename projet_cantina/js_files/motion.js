@@ -7,14 +7,9 @@ import { FBXLoader } from './Dependencies/FBXLoader.js';
 import {createFloor , createTrail} from "./floor.js";
 import {createLandscape} from "./landscape.js";
 import {CreateLasers} from "./lasers.js";
-import {createCamera } from "./camera.js";
+import {createCamera , updateCamPos} from "./camera.js";
 
 let container = document.getElementById( 'container' );
-let prevTime = performance.now();
-let velocity = new THREE.Vector3();
-let direction = new THREE.Vector3();
-let vertex = new THREE.Vector3();
-
 
 export function init() {
 	createRenderer(); //essential object
@@ -22,7 +17,7 @@ export function init() {
 	createCamera(); // 1st person control
 
 	scene = new THREE.Scene();
-	scene.add( controls.getObject() );
+	scene.add( PointerLock.getObject() );
 
 	clock = new THREE.Clock();
 
@@ -152,53 +147,8 @@ export function animate() {
 
 	requestAnimationFrame( animate );
 
-	if ( controls.isLocked === true ) {
-
-		raycaster.ray.origin.copy( controls.getObject().position );
-		raycaster.ray.origin.y -= 10;
-
-		var intersections = raycaster.intersectObjects( objects );
-
-		var onObject = intersections.length > 0;
-
-		var time = performance.now();
-		var delta = ( time - prevTime ) / 1000;
-
-		velocity.x -= velocity.x * 10.0 * delta;
-		velocity.z -= velocity.z * 10.0 * delta;
-
-		velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
-
-		direction.z = Number( moveForward ) - Number( moveBackward );
-		direction.x = Number( moveRight ) - Number( moveLeft );
-		direction.normalize(); // this ensures consistent movements in all directions
-
-		if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
-		if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
-
-		if ( onObject === true ) {
-
-			velocity.y = Math.max( 0, velocity.y );
-			canJump = true;
-
-		}
-
-		controls.moveRight( - velocity.x * delta );
-		controls.moveForward( - velocity.z * delta );
-
-		controls.getObject().position.y += ( velocity.y * delta ); // new behavior
-
-		if ( controls.getObject().position.y < 10 ) {
-
-			velocity.y = 0;
-			controls.getObject().position.y = 10;
-
-			canJump = true;
-
-		}
-
-		prevTime = time;
-
+	if ( PointerLock.isLocked === true ) {
+		updateCamPos()
 	}
 
 	render();
@@ -212,7 +162,7 @@ function render() {
 	lasers.update();
 	// camControls.update(delta);
 
-	// controls.update( clock.getDelta() );
+	// PointerLock.update( clock.getDelta() );
 	renderer.render( scene, camera );
 }
 

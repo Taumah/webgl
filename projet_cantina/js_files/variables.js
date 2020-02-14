@@ -31,9 +31,8 @@ let gravel_floor;
 
 // let velocity , direction;
 
-let human_size = 20;
+let human_size = 60;
 
-let controls;
 let objects = [];
 
 let raycaster;
